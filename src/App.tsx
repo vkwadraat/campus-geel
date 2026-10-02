@@ -81,7 +81,7 @@ function programmeColor(id: string) {
 }
 
 /*
- * Campusfoto's staan in  public/campus/  (geel.jpg, groept.jpg, geneeskunde.jpg)
+ * Campusfoto's staan in  public/campus/  (geel.jpg, geneeskunde.jpg)
  * en worden per kaart ingesteld in de Home-component hieronder.
  */
 
@@ -141,7 +141,15 @@ function statusClass(status: MaterialStatus) {
    APP
 ============================================================================ */
 
-function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => void }) {
+function App({
+  userEmail,
+  isModerator,
+  onSignOut,
+}: {
+  userEmail: string;
+  isModerator: boolean;
+  onSignOut: () => void;
+}) {
   const [view, setView] = useState<"home" | "courses">("home");
   const [campus, setCampus] = useState<Campus>("Geel");
   const [programmeId, setProgrammeId] = useState(programmes[0]?.id ?? "");
@@ -209,8 +217,6 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
     () => materials.filter((m) => m.status === "approved").length,
     [materials]
   );
-
-  // Alleen de kernvakken, zonder keuzeopties.
 
   function changeCampus(nextCampus: Campus) {
     setCampus(nextCampus);
@@ -324,19 +330,21 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
               <GradCapIcon />
             </span>
             <span className="brand-text">
-              <strong>Studico</strong>
+              <strong>BlokHub</strong>
               <span>Studentenplatform</span>
             </span>
           </button>
         </div>
 
         <div className="topbar-actions">
-          <button className="secondary-button" onClick={() => setModeratorOpen(true)}>
-            Moderatie
-            {pendingMaterials.length > 0 && (
-              <span className="notification-count">{pendingMaterials.length}</span>
-            )}
-          </button>
+          {isModerator && (
+            <button className="secondary-button" onClick={() => setModeratorOpen(true)}>
+              Moderatie
+              {pendingMaterials.length > 0 && (
+                <span className="notification-count">{pendingMaterials.length}</span>
+              )}
+            </button>
+          )}
 
           <button className="primary-button" onClick={() => openUpload()}>
             + Materiaal uploaden
@@ -352,6 +360,7 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
       {view === "home" ? (
         <Home
           materials={materials}
+          isModerator={isModerator}
           onOpenProgramme={openProgramme}
           onBrowse={() => setView("courses")}
           onUpload={() => openUpload()}
@@ -580,12 +589,14 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
 
 function Home({
   materials,
+  isModerator,
   onOpenProgramme,
   onBrowse,
   onUpload,
   onModerate,
 }: {
   materials: CourseMaterial[];
+  isModerator: boolean;
   onOpenProgramme: (id: string) => void;
   onBrowse: () => void;
   onUpload: () => void;
@@ -609,13 +620,6 @@ function Home({
       photo: "/campus/geel.jpg",
       gradient: "linear-gradient(135deg, #1f7a43, #1e64c8)",
       programmeIds: ["geel-biowetenschappen", "geel-industriele-wetenschappen"],
-    },
-    {
-      title: "Campus Leuven — Groep T",
-      icon: "💡",
-      photo: "/campus/groept.jpg",
-      gradient: "linear-gradient(135deg, #00407a, #1e64c8)",
-      programmeIds: ["leuven-industriele-wetenschappen"],
     },
     {
       title: "Campus Leuven — Geneeskunde",
@@ -688,7 +692,7 @@ function Home({
 
       <section className="hero compact">
         <div className="hero-text">
-          <p className="hero-eyebrow">Studico · KU Leuven</p>
+          <p className="hero-eyebrow">BlokHub · KU Leuven</p>
           <h1>
             <span className="wave" role="img" aria-label="zwaai">👋</span> Welkom! Studiemateriaal
             voor en door studenten
@@ -740,13 +744,15 @@ function Home({
             <span>Deel je notities, examens of samenvattingen.</span>
           </button>
 
-          <button className="quick-tile" onClick={onModerate}>
-            <span className="quick-icon">🔎</span>
-            <strong>Moderatie</strong>
-            <span>
-              Beoordeel nieuwe uploads{pendingCount > 0 ? ` (${pendingCount})` : ""}.
-            </span>
-          </button>
+          {isModerator && (
+            <button className="quick-tile" onClick={onModerate}>
+              <span className="quick-icon">🔎</span>
+              <strong>Moderatie</strong>
+              <span>
+                Beoordeel nieuwe uploads{pendingCount > 0 ? ` (${pendingCount})` : ""}.
+              </span>
+            </button>
+          )}
         </div>
       </section>
 

@@ -98,7 +98,7 @@ export default function Login() {
       <form className="login-card" onSubmit={submit} noValidate>
         <div className="login-brand">
           <span className="login-mark" aria-hidden="true">🎓</span>
-          <strong>Studico</strong>
+          <strong>BlokHub</strong>
         </div>
 
         <h1>{title}</h1>

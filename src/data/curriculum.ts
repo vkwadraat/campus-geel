@@ -816,7 +816,6 @@ export const leuvenBiomedischeWetenschappen: Programme = {
 export const programmes: Programme[] = [
   geelBiowetenschappen,
   geelIndustrieleWetenschappen,
-  leuvenIndustrieleWetenschappen,
   leuvenBiomedischeWetenschappen,
 ];
 
