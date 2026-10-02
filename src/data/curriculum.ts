@@ -813,10 +813,430 @@ export const leuvenBiomedischeWetenschappen: Programme = {
    ALLE PROGRAMMA'S + OPZOEK-HELPERS
    =========================================================================== */
 
+/* ===========================================================================
+   GEEL — MASTER INDUSTRIËLE WETENSCHAPPEN
+   =========================================================================== */
+
+const geelMasterEM = track("geel-miw-elektromechanica", "Elektromechanica", [
+  fase(
+    "geel-miw-em-f1",
+    "Master fase 1",
+    [
+      c("ZA0337", "Aandrijfsystemen", 5),
+      c("ZA0338", "Dynamisch gedrag van mechanische systemen", 4),
+      c("ZA0346", "Ontwerpen", 3),
+      c("ZA0341", "Robotica", 3),
+      c("ZA0415", "Smart Actuators", 3),
+      c("ZA0417", "Additive Manufacturing", 3),
+      k("G0N27C", "Lineaire algebra (Education)", 6),
+      k("G0U13B", "Bewijzen en redeneren (Education, 6 sp)", 6),
+      k("G0U13C", "Bewijzen en redeneren (Education, 3 sp)", 3),
+      k("I0N48B", "Statistische dataverwerking (Education)", 4),
+    ],
+    [
+      c("ZA0287", "Machine Learning", 3),
+      c("ZA0340", "Milieutechnologie", 3),
+      c("ZA0375", "Besturingstechnieken", 4),
+      c("ZA0416", "Micro Manufacturing", 3),
+      c("ZA0348", "Integrated Project on Micro- and Precision Manufacturing", 3),
+    ],
+    [
+      c("ZA0336", "Innovatie en ondernemerschap", 4),
+      c("ZA0339", "Masterproef elektromechanica", 20),
+      c("ZA0342", "Productietechnieken en materiaaltechnologie", 6),
+      c("ZA0376", "Procesautomatisering", 5),
+    ]
+  ),
+]);
+
+const geelMasterEICT = track("geel-miw-elektronica-ict", "Elektronica-ICT", [
+  fase(
+    "geel-miw-ict-f1",
+    "Master fase 1",
+    [
+      c("ZA0328", "Embedded systems and AI applications", 5),
+      c("ZA0418", "Advanced digital signal processing", 4),
+      c("ZA0419", "Power Electronics on Chip", 4),
+      c("ZA0420", "Explainable AI with Tensors", 4),
+      c("ZA0334", "Applied AI for Big Data Analytics", 4),
+      k("Z11594", "Vermogenelektronica", 3),
+      k("DB4090", "Cloud computing & toepassingen", 6),
+      k("DB4722", "Intelligent Systems for Robotics", 4),
+      k("DB3473", "E-health", 4),
+      k("ZA0335", "Bedrijfsstage elektronica-ICT: semester 1", 6),
+    ],
+    [
+      c("ZA0332", "RF and PLL Design", 4),
+      c("ZA0327", "Artificiële intelligentie", 4),
+      c("ZA0330", "Digital Chip Design", 4),
+      c("ZA0329", "Image Sensors", 4),
+      c("ZA0422", "Analog and Mixed-Signal Chip Design", 4),
+      c("ZA0421", "Knowledge-Guided AI", 4),
+      k("ZA0244", "Project: Radiation to Electronics", 4),
+      k("DB4724", "User-centered design", 4),
+      k("DB4723", "Human AI interaction", 4),
+      k("ZA0368", "Bedrijfsstage elektronica-ICT: semester 2", 6),
+    ],
+    [
+      c("ZA0324", "Masterproef elektronica-ICT", 20),
+      c("ZA0325", "Innovatie en ondernemerschap", 3),
+      k("JPI25B", "Capita selecta onderzoekstopics elektronica-ICT", 3),
+    ]
+  ),
+]);
+
+const geelMasterEnergie = track("geel-miw-energie", "Energie", [
+  fase(
+    "geel-miw-energie-f1",
+    "Master fase 1",
+    [
+      c("ZA0353", "Vermogenselektronica", 4),
+      c("ZA0413", "Numeriek ontwerp van thermische componenten", 3),
+      c("ZA0414", "Rationeel energiegebruik en energiebeheer in gebouwen", 3),
+      k("DB3474", "Fundamentals of Battery Engineering", 4),
+      k("ZA0358", "HVAC in Buildings", 4),
+      k("JPI376", "Verlichting", 4),
+    ],
+    [
+      c("ZA0352", "Elektrische aandrijvingen", 4),
+      c("ZA0340", "Milieutechnologie", 3),
+      c("ZA0357", "Energy Markets", 3),
+    ],
+    [
+      c("ZA0350", "Masterproef energie", 20),
+      c("ZA0351", "Innovatie en ondernemerschap", 4),
+      c("ZA0356", "Energievoorziening van de toekomst", 6),
+      c("ZA0355", "Refrigeration and Heat Recovery", 6),
+      k("ZA0354", "Numerieke methoden in de energie (overgang)", 6),
+    ]
+  ),
+]);
+
+export const geelMasterIndustrieleWetenschappen: Programme = {
+  id: "geel-master-industriele-wetenschappen",
+  name: "Master in de industriële wetenschappen",
+  level: "Master",
+  campus: "Geel",
+  academicYear: "2026-2027",
+  description: "Master in de industriële wetenschappen aan Campus Geel.",
+  tracks: [geelMasterEM, geelMasterEICT, geelMasterEnergie],
+};
+
+/* ===========================================================================
+   GEEL — MASTER BIOWETENSCHAPPEN
+   =========================================================================== */
+
+const mbioLtbDier = option("geel-mbio-ltb-dier", "Toegepaste dierwetenschappen", [
+  fase(
+    "geel-mbio-ltb-dier-f1",
+    "Master fase 1",
+    [c("ZA0002", "Agrarische bouwkunde en klimatisatie", 5), c("ZA0165", "Rundveemanagement", 5)],
+    [],
+    [
+      c("Z10198", "Dierlijke productie intensief", 5),
+      c("ZA0166", "Livestock Technology", 5),
+      c("ZA0175", "Masterproef toegepaste dierwetenschappen", 20),
+    ]
+  ),
+]);
+
+const mbioLtbOmgeving = option("geel-mbio-ltb-omgeving", "Toegepaste omgevingswetenschappen", [
+  fase(
+    "geel-mbio-ltb-omgeving-f1",
+    "Master fase 1",
+    [
+      c("ZA0179", "An introduction to soils, ecosystems and livelihoods in the tropics", 5),
+      c("ZA0363", "Ecosystemen", 5),
+    ],
+    [c("ZA0167", "Milieu", 5), c("ZA0170", "Geïntegreerd practicum omgevingswetenschappen", 5)],
+    [c("ZA0235", "Masterproef toegepaste omgevingswetenschappen", 20)]
+  ),
+]);
+
+const mbioLtbPlant = option("geel-mbio-ltb-plant", "Toegepaste plantwetenschappen", [
+  fase(
+    "geel-mbio-ltb-plant-f1",
+    "Master fase 1",
+    [c("ZA0172", "Fruitteelt", 5), c("ZA0174", "Sierteelt", 5)],
+    [c("ZA0171", "Akkerteelten en voedergewassen", 5), c("ZA0173", "Groenteteelt", 5)],
+    [c("ZA0236", "Masterproef toegepaste plantwetenschappen", 20)]
+  ),
+]);
+
+const geelMasterLtb = track(
+  "geel-mbio-ltb",
+  "Land- en tuinbouwkunde",
+  [
+    fase(
+      "geel-mbio-ltb-f1",
+      "Master fase 1",
+      [],
+      [k("ZA0176", "Veevoedertechnologie en petfood", 5), k("ZA0367", "Milieutechnologie", 5)],
+      [c("ZA0362", "Ondernemen LT", 5), k("ZA0177", "Interacties tussen dier en mens", 5)]
+    ),
+  ],
+  [mbioLtbDier, mbioLtbOmgeving, mbioLtbPlant]
+);
+
+const geelMasterVoeding = track("geel-mbio-voeding", "Voedingsindustrie", [
+  fase(
+    "geel-mbio-voeding-f1",
+    "Master fase 1",
+    [
+      c("Z08627", "Levensmiddelenmicrobiologie", 3),
+      c("ZA0366", "Productieprocessen in de voedingsindustrie", 6),
+    ],
+    [c("Z08581", "Conserveringstechnologie", 3), c("ZA0162", "Fysicochemie van de levensmiddelen", 5)],
+    [
+      c("Z08657", "Masterproef voedingsindustrie", 20),
+      c("ZA0321", "Productieprocessen in de praktijk", 5),
+      c("ZA0365", "Ondernemen V", 3),
+    ]
+  ),
+]);
+
+export const geelMasterBiowetenschappen: Programme = {
+  id: "geel-master-biowetenschappen",
+  name: "Master in de biowetenschappen",
+  level: "Master",
+  campus: "Geel",
+  academicYear: "2026-2027",
+  description: "Master in de biowetenschappen aan Campus Geel.",
+  tracks: [geelMasterLtb, geelMasterVoeding],
+};
+
+/* ===========================================================================
+   LEUVEN — MASTER BIOMEDISCHE WETENSCHAPPEN
+   =========================================================================== */
+
+const mbmwBasis = option("leuven-mbmw-basis", "Biomedisch basis- en translationeel onderzoek", [
+  fase(
+    "leuven-mbmw-basis-f1",
+    "Master fase 1",
+    [c("E03N7A", "Ziekteleer", 6)],
+    [c("E03N8A", "Toxicologie", 4)],
+    [
+      c("E04N2A", "Labrotaties", 5),
+      c("E0K73A", "Bioinformatics and AI: Sequence, Structure and Evolution", 6),
+    ]
+  ),
+  fase(
+    "leuven-mbmw-basis-f2",
+    "Master fase 2",
+    [c("E0K74A", "Bioinformatics and AI: Expression, Regulation and Networks", 5)],
+    [],
+    [c("E08Z3A", "Masterproef biomedisch basis- en translationeel onderzoek", 30)]
+  ),
+]);
+
+const mbmwKlinisch = option("leuven-mbmw-klinisch", "Klinische biomedische wetenschappen", [
+  fase(
+    "leuven-mbmw-klinisch-f1",
+    "Master fase 1",
+    [
+      c("E05Z1A", "Verdieping in ziekteleer I", 7),
+      c("E05Z9A", "Voeding en gezondheid", 4),
+      k("E0G27B", "Klinische chemie: theorie (keuze)", 8),
+    ],
+    [
+      c("E05Z2A", "Verdieping in ziekteleer II", 8),
+      c("E0K75A", "Klinische studies", 3),
+      c("E0K80A", "Datamanagement in de gezondheidszorg", 5),
+      k("E0G25A", "Diagnostische microbiologie: theorie (keuze)", 8),
+      k("E0H89A", "IKZ en wetgeving (keuze)", 3),
+    ],
+    [c("E0K78A", "Stages en vaardigheden klinische BMW", 5)]
+  ),
+  fase(
+    "leuven-mbmw-klinisch-f2",
+    "Master fase 2",
+    [c("E05Z5A", "Aanpak van chronische ziekten", 4)],
+    [],
+    [c("E0K79A", "Masterproef klinische BMW met klinische stage", 30)]
+  ),
+]);
+
+const mbmwVoeding = option("leuven-mbmw-voeding", "Toegepaste BMW — Voeding", [
+  fase(
+    "leuven-mbmw-voeding-f1",
+    "Master fase 1",
+    [c("E02Z4A", "Basisprincipes van humane voeding", 7), c("E03N7A", "Ziekteleer", 6)],
+    [
+      c("E02N2A", "Economische kijk op de Belgische gezondheidszorg", 5),
+      c("E0K80A", "Datamanagement in de gezondheidszorg", 5),
+      c("E0K82A", "Innovatie en trends in de voedingswetenschappen", 6),
+    ],
+    [c("E02Z3A", "Labrotatie en stages voeding", 5)]
+  ),
+  fase(
+    "leuven-mbmw-voeding-f2",
+    "Master fase 2",
+    [c("E03Z5A", "Voedselveiligheid en wetgeving", 4), c("E0K84A", "Voeding bij ziekte en specifieke doelgroepen", 5)],
+    [c("E0K83A", "Klinische voeding", 3)],
+    [c("E0K85A", "Masterproef voeding", 30)]
+  ),
+]);
+
+const mbmwForensisch = option("leuven-mbmw-forensisch", "Toegepaste BMW — Forensische BMW", [
+  fase(
+    "leuven-mbmw-forensisch-f1",
+    "Master fase 1",
+    [
+      c("E03N7A", "Ziekteleer", 6),
+      c("E0K86A", "Recht voor deskundigen", 4),
+      c("E0K87A", "Forensische genetica", 4),
+    ],
+    [
+      c("E05Z0A", "Multidisciplinaire forensische wetenschappen", 4),
+      c("E0K88A", "Criminalistiek", 4),
+      c("E0K89A", "Gevorderde forensische genetica", 4),
+    ],
+    [c("E0K90A", "Labrotatie en stages forensische BMW", 5)]
+  ),
+  fase(
+    "leuven-mbmw-forensisch-f2",
+    "Master fase 2",
+    [c("E0K91A", "Forensische toxicologie", 4), c("E0K92A", "Forensische medische wetenschappen", 4)],
+    [c("E0K93A", "Gevorderde forensische toxicologie", 4), c("E0K94A", "De deskundige en bewijsvoering", 3)],
+    [c("E0K95A", "Masterproef forensische BMW", 30)]
+  ),
+]);
+
+const mbmwManagement = option("leuven-mbmw-management", "Toegepaste BMW — Management", [
+  fase(
+    "leuven-mbmw-management-f1",
+    "Master fase 1",
+    [c("E03N7A", "Ziekteleer", 6), c("E0L13A", "Milieu en gezondheid", 5)],
+    [
+      c("E02N2A", "Economische kijk op de Belgische gezondheidszorg", 5),
+      c("E02Z1A", "Riskmanagement en kwaliteitsindicatoren", 3),
+      c("E0K80A", "Datamanagement in de gezondheidszorg", 5),
+      c("K09N5A", "Regulatory Affairs and Market Access", 3),
+    ],
+    [c("E0K97A", "Labrotatie en stages management in de biomedische sector", 5)]
+  ),
+  fase(
+    "leuven-mbmw-management-f2",
+    "Master fase 2",
+    [c("E01Z7A", "Diagnostische methoden en procesanalyse", 4)],
+    [c("E01N8B", "Patent Law in Practice", 5), c("E01Z8A", "Kwaliteitsverbeteringsonderzoek", 5)],
+    [c("E0L12A", "Masterproef management in de biomedische sector", 30)]
+  ),
+]);
+
+const mbmwResearch = option("leuven-mbmw-research", "Research Tracks", [
+  fase(
+    "leuven-mbmw-research-f1",
+    "Research Tracks — Advanced (S1) & Hot Topics (S2)",
+    [
+      k("E04N8A", "Advanced Biology of the Cell/Neuron", 5),
+      k("E0G08A", "Advances in Biomarkers for Human Diseases", 5),
+      k("E04N5A", "Fundamental and Medical Aspects of Cardiovascular Biology", 5),
+      k("E09G4A", "Advances in Critical Illness", 5),
+      k("E04N3A", "Advanced Studies in Developmental Biology: Organogenesis", 5),
+      k("E07I6A", "Advanced Methods for Disease Modeling, Gene and Drug Therapy", 5),
+      k("E08I1A", "Advances in Gastroenterology", 5),
+      k("E0I91A", "Advances in Gene Therapy Development", 5),
+      k("E03N0A", "Advanced Studies in Genetics", 5),
+      k("E0H83A", "Advances in Genomic Medicine", 5),
+      k("E08F4A", "Advances in Hormonology", 5),
+      k("E05N3A", "Advanced Immunology", 5),
+      k("E05N0A", "Advanced Medical Imaging", 5),
+      k("E09F0A", "Advances in Metabolism and Human Disease", 5),
+      k("E05N5A", "Advanced Microbiology", 5),
+      k("E08F8A", "Advances in Microscopy for Biomedical Research", 5),
+      k("E09F4A", "Advances in Molecular Cell Biology", 5),
+      k("E09F6A", "Advances in Neurobiology of Disease", 5),
+      k("E00V5A", "Advances in the Neurobiology of Psychiatric Disorders", 5),
+      k("E0G10A", "Advances in Neurodegenerative Diseases", 5),
+      k("E03N2A", "Advances in Oncology – Focus on Cancer Therapy", 5),
+      k("E09F8A", "Advances in Oncology – Focus on Molecular Mechanisms", 5),
+      k("E0H81A", "Advances in Pandemic Preparedness", 5),
+      k("E0E38A", "Advances in Pathology: Functional and Oncological (Histo)Pathology", 5),
+      k("E0H85A", "Advances in Skeletal Biology and Regeneration", 5),
+      k("E0E36A", "Advances in Stem Cell Biology", 5),
+      k("E03N4A", "Advanced Studies in System and Cognitive Neurosciences", 5),
+      k("E0H87A", "Advances in Techniques in Biomedical Cancer Research", 5),
+    ],
+    [
+      k("E04N9A", "Hot Topics in Biology of the Cell/Neuron", 5),
+      k("E0G09A", "Hot Topics in Biomarkers for Human Diseases", 5),
+      k("E04N6A", "Hot Topics in Cardiovascular Biology", 5),
+      k("E09G5A", "Hot Topics in Critical Illness", 5),
+      k("E04N4A", "Hot Topics in Developmental Biology", 5),
+      k("E05N7A", "Hot Topics in Disease Modeling, Gene and Drug Therapy", 5),
+      k("E08I2A", "Hot Topics in Gastroenterology", 5),
+      k("E0I92A", "Hot Topics in Gene Therapy Development", 5),
+      k("E03N1A", "Hot Topics in Genetics", 5),
+      k("E0H84A", "Hot Topics in Genomic Medicine", 5),
+      k("E08F5A", "Hot Topics in Hormonology", 5),
+      k("E05N4A", "Hot Topics in Immunology", 5),
+      k("E05N1A", "Hot Topics in Medical Imaging I", 5),
+      k("E05N2A", "Hot Topics in Medical Imaging II", 5),
+      k("E09F1A", "Hot Topics in Metabolism and Human Disease", 5),
+      k("E05N6A", "Hot Topics in Microbiology", 5),
+      k("E08F9A", "Hot Topics in Microscopy for Biomedical Research", 5),
+      k("E09F5A", "Hot Topics in Molecular Cell Biology", 5),
+      k("E09F7A", "Hot Topics in Neurobiology of Disease", 5),
+      k("E00V6A", "Hot Topics in the Neurobiology of Psychiatric Disorders", 5),
+      k("E0G11A", "Hot Topics in Neurodegenerative Diseases", 5),
+      k("E03N3A", "Hot Topics in Oncology – Focus on Cancer Therapy", 5),
+      k("E09F9A", "Hot Topics in Oncology – Focus on Molecular Mechanisms", 5),
+      k("E0H82A", "Hot Topics in Pandemic Preparedness", 5),
+      k("E0E39A", "Hot Topics in Pathology: Functional and Oncological (Histo)Pathology", 5),
+      k("E0H86A", "Hot Topics in Skeletal Biology and Regeneration", 5),
+      k("E0E37A", "Hot Topics in Stem Cell Biology", 5),
+      k("E03N5A", "Hot Topics in System and Cognitive Neurosciences", 5),
+      k("E0H88A", "Hot Topics in Techniques in Biomedical Cancer Research", 5),
+    ]
+  ),
+]);
+
+const leuvenMasterBmwTrack = track(
+  "leuven-mbmw",
+  "Biomedische wetenschappen",
+  [
+    fase(
+      "leuven-mbmw-f1",
+      "Master fase 1 — gemeenschappelijk",
+      [
+        c("E03N6A", "Farmacologie en farmacokinetiek", 7),
+        c("E09Y3A", "Toegepaste biostatistiek", 5),
+        c("E0K70A", "Quality and Process Management", 5),
+        c("E02N9A", "Ethiek en recht in het biomedisch onderzoek", 3),
+      ],
+      [
+        c("E02N5A", "Intellectuele eigendom en biowetenschappen", 3),
+        c("E03N9A", "Pharmaceutical Medicine", 5),
+        c("E0K72A", "Regulatory Sciences in Biomedicine", 3),
+        c("E0K71A", "People Management", 3),
+      ]
+    ),
+  ],
+  [mbmwBasis, mbmwKlinisch, mbmwVoeding, mbmwForensisch, mbmwManagement, mbmwResearch]
+);
+
+export const leuvenMasterBiomedischeWetenschappen: Programme = {
+  id: "leuven-master-biomedische-wetenschappen",
+  name: "Master in de biomedische wetenschappen",
+  level: "Master",
+  campus: "Leuven",
+  academicYear: "2026-2027",
+  description: "Master in de biomedische wetenschappen aan Campus Leuven (120 ECTS).",
+  tracks: [leuvenMasterBmwTrack],
+};
+
+/* ===========================================================================
+   ALLE PROGRAMMA'S
+   =========================================================================== */
+
 export const programmes: Programme[] = [
   geelBiowetenschappen,
   geelIndustrieleWetenschappen,
   leuvenBiomedischeWetenschappen,
+  geelMasterIndustrieleWetenschappen,
+  geelMasterBiowetenschappen,
+  leuvenMasterBiomedischeWetenschappen,
 ];
 
 export const getProgrammesByCampus = (campus: Campus): Programme[] =>

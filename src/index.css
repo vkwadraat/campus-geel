@@ -1820,3 +1820,65 @@ button.material-section:hover .material-section-cta {
     animation-duration: 0.01ms !important;
   }
 }
+/* ============================================================================
+   Simpele categorielijst in het vakvenster
+   Plak dit onderaan je bestaande src/index.css.
+   ============================================================================ */
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.category-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+  font-weight: 600;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+}
+.category-row:hover {
+  border-color: var(--accent, var(--kul));
+  box-shadow: 0 4px 14px rgba(21, 34, 59, 0.08);
+  transform: translateX(2px);
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+.category-name {
+  flex: 1;
+}
+
+.category-count {
+  flex: none;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.5rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--ok-bg);
+  color: var(--ok);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.category-chevron {
+  flex: none;
+  color: #c3cddd;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+.category-row:hover .category-chevron {
+  color: var(--accent, var(--kul));
+}

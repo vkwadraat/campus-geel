@@ -72,6 +72,9 @@ const PROGRAMME_COLORS: Record<string, string> = {
   "geel-industriele-wetenschappen": "#1e64c8", // KU Leuven-blauw
   "leuven-industriele-wetenschappen": "#00407a", // dieper blauw
   "leuven-biomedische-wetenschappen": "#a4328a", // magenta
+  "geel-master-biowetenschappen": "#2e7d32", // groen (zoals bachelor)
+  "geel-master-industriele-wetenschappen": "#1e64c8", // KU Leuven-blauw
+  "leuven-master-biomedische-wetenschappen": "#a4328a", // magenta
 };
 
 const PROGRAMME_FALLBACK = "#1e64c8";
@@ -619,14 +622,22 @@ function Home({
       icon: "🌿",
       photo: "/campus/geel.jpg",
       gradient: "linear-gradient(135deg, #1f7a43, #1e64c8)",
-      programmeIds: ["geel-biowetenschappen", "geel-industriele-wetenschappen"],
+      programmeIds: [
+        "geel-biowetenschappen",
+        "geel-industriele-wetenschappen",
+        "geel-master-biowetenschappen",
+        "geel-master-industriele-wetenschappen",
+      ],
     },
     {
       title: "Campus Leuven — Geneeskunde",
       icon: "🩺",
       photo: "/campus/geneeskunde.jpg",
       gradient: "linear-gradient(135deg, #5b1a6b, #a4328a)",
-      programmeIds: ["leuven-biomedische-wetenschappen"],
+      programmeIds: [
+        "leuven-biomedische-wetenschappen",
+        "leuven-master-biomedische-wetenschappen",
+      ],
     },
   ];
 
@@ -983,38 +994,20 @@ function CourseModal({
         ) : (
           /* ---------- Overzicht met alle categorieën ---------- */
           <>
-            <div className="approved-notice">
-              <span>✓</span>
-
-              <div>
-                <strong>Goedgekeurd studiemateriaal</strong>
-                <small>
-                  Klik op een categorie om alle goedgekeurde bestanden te bekijken.
-                </small>
-              </div>
-            </div>
-
-            <div className="course-material-grid">
+            <div className="category-list">
               {MATERIAL_TYPES.map((type) => {
                 const count = grouped[type].length;
 
                 return (
                   <button
-                    className="material-section"
+                    className="category-row"
                     key={type}
                     onClick={() => setOpenType(type)}
                   >
-                    <div className="material-section-title">
-                      <span>{materialTypeIcons[type]}</span>
-                      <strong>{materialTypeLabels[type]}</strong>
-                      <small>{count}</small>
-                    </div>
-
-                    <div className="material-section-cta">
-                      {count === 0
-                        ? "Nog geen materiaal — bekijk categorie"
-                        : `${count} bestand${count === 1 ? "" : "en"} — bekijk →`}
-                    </div>
+                    <span className="category-icon">{materialTypeIcons[type]}</span>
+                    <span className="category-name">{materialTypeLabels[type]}</span>
+                    {count > 0 && <span className="category-count">{count}</span>}
+                    <span className="category-chevron" aria-hidden="true">›</span>
                   </button>
                 );
               })}
