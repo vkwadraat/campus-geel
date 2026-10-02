@@ -111,7 +111,7 @@ export default function Login() {
           <input
             type="email"
             autoComplete="email"
-            placeholder="r0123456@student.kuleuven.be"
+            placeholder="voornaam.naam@student.kuleuven.be"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
