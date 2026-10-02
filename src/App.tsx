@@ -13,8 +13,16 @@ import {
   type Programme,
   type Track,
 } from "./data/curriculum";
+import {
+  fetchMaterials,
+  uploadMaterial,
+  reviewMaterial,
+  removeMaterial,
+  type NewMaterialInput,
+} from "./lib/materials";
 
 import "./index.css";
+
 
 /* ============================================================================
    LOGO — afstudeerhoed
@@ -56,8 +64,6 @@ function GradCapIcon() {
    HULPFUNCTIES
 ============================================================================ */
 
-const STORAGE_KEY = "campushub-materials";
-
 const MATERIAL_TYPES: MaterialType[] = resourceTypes.map((r) => r.id);
 
 // Een eigen kleur per opleiding, voor de tegels op het startscherm.
@@ -78,29 +84,6 @@ function programmeColor(id: string) {
  * Campusfoto's staan in  public/campus/  (geel.jpg, groept.jpg, geneeskunde.jpg)
  * en worden per kaart ingesteld in de Home-component hieronder.
  */
-
-function loadMaterials(): CourseMaterial[] {
-  try {
-    const value = localStorage.getItem(STORAGE_KEY);
-    if (!value) return [];
-
-    const parsed = JSON.parse(value);
-    if (!Array.isArray(parsed)) return [];
-
-    // Oude of ongeldige types uit eerdere versies worden weggefilterd.
-    return parsed.filter((m) => MATERIAL_TYPES.includes(m?.type));
-  } catch {
-    return [];
-  }
-}
-
-function saveMaterials(materials: CourseMaterial[]) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(materials));
-  } catch {
-    // localStorage kan geblokkeerd zijn
-  }
-}
 
 function getApprovedMaterials(materials: CourseMaterial[], courseId: string) {
   return materials.filter((m) => m.courseId === courseId && m.status === "approved");
@@ -164,7 +147,7 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
   const [programmeId, setProgrammeId] = useState(programmes[0]?.id ?? "");
   const [trackId, setTrackId] = useState(programmes[0]?.tracks[0]?.id ?? "");
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [materials, setMaterials] = useState<CourseMaterial[]>(loadMaterials);
+  const [materials, setMaterials] = useState<CourseMaterial[]>([]);
   const [search, setSearch] = useState("");
   const [phaseId, setPhaseId] = useState("all");
   const [uploadOpen, setUploadOpen] = useState(false);
@@ -172,9 +155,18 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
   const [moderatorOpen, setModeratorOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  async function reload() {
+    try {
+      setMaterials(await fetchMaterials());
+    } catch (error) {
+      console.error("Materiaal laden mislukt", error);
+    }
+  }
+
   useEffect(() => {
-    saveMaterials(materials);
-  }, [materials]);
+    reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const campusProgrammes = useMemo(
     () => programmes.filter((p) => p.campus === campus),
@@ -271,33 +263,34 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
     setSidebarOpen(false);
   }
 
-  function updateMaterial(id: string, patch: Partial<CourseMaterial>) {
-    setMaterials((current) => current.map((m) => (m.id === id ? { ...m, ...patch } : m)));
+  async function approveMaterial(id: string) {
+    try {
+      await reviewMaterial(id, "approved");
+      await reload();
+    } catch {
+      window.alert("Goedkeuren is mislukt.");
+    }
   }
 
-  function approveMaterial(id: string) {
-    updateMaterial(id, {
-      status: "approved",
-      reviewedBy: "Moderator",
-      reviewedAt: new Date().toISOString(),
-      rejectionReason: undefined,
-    });
-  }
-
-  function rejectMaterial(id: string) {
+  async function rejectMaterial(id: string) {
     const reason = window.prompt("Waarom wordt dit materiaal afgekeurd?");
     if (!reason?.trim()) return;
 
-    updateMaterial(id, {
-      status: "rejected",
-      reviewedBy: "Moderator",
-      reviewedAt: new Date().toISOString(),
-      rejectionReason: reason.trim(),
-    });
+    try {
+      await reviewMaterial(id, "rejected", reason.trim());
+      await reload();
+    } catch {
+      window.alert("Afkeuren is mislukt.");
+    }
   }
 
-  function deleteMaterial(id: string) {
-    setMaterials((current) => current.filter((m) => m.id !== id));
+  async function deleteMaterial(id: string) {
+    try {
+      await removeMaterial(id);
+      await reload();
+    } catch {
+      window.alert("Verwijderen is mislukt.");
+    }
   }
 
   function openUpload(courseId?: string) {
@@ -305,8 +298,9 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
     setUploadOpen(true);
   }
 
-  function handleUpload(material: CourseMaterial) {
-    setMaterials((current) => [...current, material]);
+  async function handleUpload(input: NewMaterialInput) {
+    await uploadMaterial(input);
+    await reload();
     setUploadOpen(false);
   }
 
@@ -336,7 +330,7 @@ function App({ userEmail, onSignOut }: { userEmail: string; onSignOut: () => voi
           </button>
         </div>
 
-                <div className="topbar-actions">
+        <div className="topbar-actions">
           <button className="secondary-button" onClick={() => setModeratorOpen(true)}>
             Moderatie
             {pendingMaterials.length > 0 && (
@@ -1050,7 +1044,7 @@ function UploadModal({
   courses: Course[];
   initialCourseId?: string;
   onClose: () => void;
-  onSubmit: (material: CourseMaterial) => void;
+  onSubmit: (input: NewMaterialInput) => Promise<void>;
 }) {
   const [courseId, setCourseId] = useState(
     initialCourseId && courses.some((c) => c.id === initialCourseId)
@@ -1062,6 +1056,7 @@ function UploadModal({
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
   const selectedCourse = courses.find((c) => c.id === courseId);
 
@@ -1089,7 +1084,7 @@ function UploadModal({
     setCourseListOpen(false);
   }
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
     setError("");
 
@@ -1108,29 +1103,28 @@ function UploadModal({
       return;
     }
 
-    /*
-     * Lokale demo-versie: het bestand blijft in de browser.
-     * In een echte app upload je het naar Storage (Supabase/Firebase)
-     * en bewaar je de publieke URL in de database.
-     */
-    const material: CourseMaterial = {
-      id: crypto.randomUUID(),
-      courseId: selectedCourse.id,
-      courseName: selectedCourse.name,
-      courseCode: selectedCourse.code,
-      type,
-      title: title.trim(),
-      description: description.trim() || undefined,
-      fileName: file.name,
-      fileType: file.type || undefined,
-      fileSize: file.size,
-      fileUrl: URL.createObjectURL(file),
-      uploadedBy: "Student",
-      uploadedAt: new Date().toISOString(),
-      status: "pending",
-    };
+    if (file.size > 20 * 1024 * 1024) {
+      setError("Het bestand is groter dan 20 MB.");
+      return;
+    }
 
-    onSubmit(material);
+    setBusy(true);
+
+    try {
+      await onSubmit({
+        courseId: selectedCourse.id,
+        courseName: selectedCourse.name,
+        courseCode: selectedCourse.code,
+        type,
+        title: title.trim(),
+        description: description.trim() || undefined,
+        file,
+      });
+    } catch {
+      setError("Upload mislukt. Controleer je verbinding en het bestandstype, en probeer opnieuw.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -1255,8 +1249,8 @@ function UploadModal({
             Annuleren
           </button>
 
-          <button type="submit" className="primary-button">
-            Upload ter controle
+          <button type="submit" className="primary-button" disabled={busy}>
+            {busy ? "Bezig met uploaden…" : "Upload ter controle"}
           </button>
         </div>
       </form>
