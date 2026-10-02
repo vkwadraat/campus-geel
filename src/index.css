@@ -1882,3 +1882,190 @@ button.material-section:hover .material-section-cta {
 .category-row:hover .category-chevron {
   color: var(--accent, var(--kul));
 }
+/* ============================================================================
+   BlokHub — Cocoon-blok + aanvraagformulier (home-pagina)
+   Plak dit onderaan je bestaande src/index.css.
+   ============================================================================ */
+
+.section-intro {
+  margin: -0.25rem 0 1.1rem;
+  max-width: 48rem;
+  color: #5b6676;
+  line-height: 1.55;
+}
+
+/* ---- Cocoon-blok (klikbare kaart naar externe site) ---- */
+.cocoon-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  min-height: 190px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #0f6b4f, #1e64c8);
+  box-shadow: 0 18px 40px rgba(15, 44, 80, 0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.cocoon-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 54px rgba(15, 44, 80, 0.26);
+}
+
+.cocoon-photo {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 55%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.92;
+  -webkit-mask-image: linear-gradient(to left, #000 50%, transparent);
+  mask-image: linear-gradient(to left, #000 50%, transparent);
+}
+
+.cocoon-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: 60%;
+  padding: 1.6rem 1.8rem;
+}
+.cocoon-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.cocoon-title {
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+.cocoon-sub {
+  line-height: 1.45;
+  opacity: 0.92;
+}
+.cocoon-button {
+  margin-top: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #0f6b4f;
+  font-weight: 700;
+}
+.cocoon-button .arrow {
+  transition: transform 0.15s ease;
+}
+.cocoon-card:hover .cocoon-button .arrow {
+  transform: translateX(3px);
+}
+
+/* ---- Aanvraagformulier ---- */
+.request-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #e3e8f0);
+  box-shadow: 0 10px 30px rgba(21, 34, 59, 0.06);
+}
+.request-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.request-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.request-field > span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink, #15223b);
+}
+.request-field input,
+.request-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--line, #d7deea);
+  background: #fff;
+  color: var(--ink, #15223b);
+  font: inherit;
+  resize: vertical;
+}
+.request-field input:focus,
+.request-field textarea:focus {
+  outline: none;
+  border-color: var(--kul, #1e64c8);
+  box-shadow: 0 0 0 3px rgba(30, 100, 200, 0.15);
+}
+.request-submit {
+  align-self: flex-start;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--kul, #1e64c8);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.12s ease;
+}
+.request-submit:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+.request-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.request-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.9rem;
+}
+.request-done {
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.request-done-icon {
+  font-size: 1.6rem;
+}
+.request-done p {
+  margin: 0;
+  color: #5b6676;
+}
+.request-reset {
+  margin-top: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--line, #d7deea);
+  background: #fff;
+  color: var(--ink, #15223b);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .request-grid {
+    grid-template-columns: 1fr;
+  }
+  .cocoon-photo {
+    width: 42%;
+    opacity: 0.5;
+  }
+  .cocoon-body {
+    max-width: 100%;
+  }
+}

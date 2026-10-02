@@ -20,8 +20,12 @@ import {
   removeMaterial,
   type NewMaterialInput,
 } from "./lib/materials";
+import { submitCampusRequest } from "./lib/campusRequests.ts";
 
 import "./index.css";
+
+/* Externe link naar het Cocoon-project van Campus Geel. */
+const COCOON_URL = "https://iiw.kuleuven.be/geel/cocoon2440";
 
 
 /* ============================================================================
@@ -364,6 +368,7 @@ function App({
         <Home
           materials={materials}
           isModerator={isModerator}
+          userEmail={userEmail}
           onOpenProgramme={openProgramme}
           onBrowse={() => setView("courses")}
           onUpload={() => openUpload()}
@@ -590,9 +595,120 @@ function App({
    HOME — startscherm
 ============================================================================ */
 
+/* ============================================================================
+   Aanvraagformulier — andere campussen vragen een nieuwe campus aan.
+   Staat op top-niveau (niet genest in Home) zodat de velden hun focus houden.
+============================================================================ */
+function CampusRequestForm({ defaultEmail }: { defaultEmail: string }) {
+  const [campusName, setCampusName] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
+  const [programmesWanted, setProgrammesWanted] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (status === "sending") return;
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      await submitCampusRequest({
+        campusName: campusName.trim(),
+        contactName: contactName.trim(),
+        email: email.trim(),
+        programmes: programmesWanted.trim() || undefined,
+        message: message.trim() || undefined,
+      });
+      setStatus("done");
+      setCampusName("");
+      setContactName("");
+      setProgrammesWanted("");
+      setMessage("");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Er ging iets mis. Probeer het later opnieuw.");
+    }
+  }
+
+  if (status === "done") {
+    return (
+      <div className="request-card request-done">
+        <span className="request-done-icon" role="img" aria-label="verzonden">✅</span>
+        <strong>Bedankt! Je aanvraag is verzonden.</strong>
+        <p>We nemen ze door en contacteren je via het opgegeven e-mailadres.</p>
+        <button type="button" className="request-reset" onClick={() => setStatus("idle")}>
+          Nog een aanvraag indienen
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="request-card" onSubmit={handleSubmit}>
+      <div className="request-grid">
+        <label className="request-field">
+          <span>Campus of instelling *</span>
+          <input
+            value={campusName}
+            onChange={(e) => setCampusName(e.target.value)}
+            required
+            placeholder="bv. Campus Brugge"
+          />
+        </label>
+        <label className="request-field">
+          <span>Contactpersoon *</span>
+          <input
+            value={contactName}
+            onChange={(e) => setContactName(e.target.value)}
+            required
+            placeholder="Voor- en achternaam"
+          />
+        </label>
+        <label className="request-field">
+          <span>E-mail *</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="jij@kuleuven.be"
+          />
+        </label>
+        <label className="request-field">
+          <span>Gewenste opleiding(en)</span>
+          <input
+            value={programmesWanted}
+            onChange={(e) => setProgrammesWanted(e.target.value)}
+            placeholder="bv. industriële wetenschappen"
+          />
+        </label>
+      </div>
+
+      <label className="request-field">
+        <span>Bericht</span>
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          rows={3}
+          placeholder="Vertel kort wat jullie nodig hebben."
+        />
+      </label>
+
+      {status === "error" && <p className="request-error">{errorMsg}</p>}
+
+      <button type="submit" className="request-submit" disabled={status === "sending"}>
+        {status === "sending" ? "Versturen…" : "Aanvraag versturen"}
+      </button>
+    </form>
+  );
+}
+
 function Home({
   materials,
   isModerator,
+  userEmail,
   onOpenProgramme,
   onBrowse,
   onUpload,
@@ -600,6 +716,7 @@ function Home({
 }: {
   materials: CourseMaterial[];
   isModerator: boolean;
+  userEmail: string;
   onOpenProgramme: (id: string) => void;
   onBrowse: () => void;
   onUpload: () => void;
@@ -738,6 +855,39 @@ function Home({
             />
           ))}
         </div>
+      </section>
+
+      <section className="home-section">
+        <h2>Nieuwe campus aanvragen</h2>
+        <p className="section-intro">
+          Zit jouw campus er nog niet bij? Vraag aan om jullie opleidingen aan
+          BlokHub toe te voegen, zodat ook jullie studenten materiaal kunnen delen.
+        </p>
+        <CampusRequestForm defaultEmail={userEmail} />
+      </section>
+
+      <section className="home-section">
+        <h2>Ontdek meer</h2>
+        <a
+          className="cocoon-card"
+          href={COCOON_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div
+            className="cocoon-photo"
+            style={{ backgroundImage: 'url("/campus/cocoon.jpg")' }}
+            aria-hidden="true"
+          />
+          <div className="cocoon-body">
+            <span className="cocoon-eyebrow">KU Leuven · Campus Geel</span>
+            <strong className="cocoon-title">Cocoon 2440</strong>
+            <span className="cocoon-sub">Ontdek het project van Campus Geel.</span>
+            <span className="cocoon-button">
+              Naar de website <span className="arrow">→</span>
+            </span>
+          </div>
+        </a>
       </section>
 
       <section className="home-section">
