@@ -181,3 +181,21 @@ export async function removeMaterial(id: string): Promise<void> {
     }
   }
 }
+
+/** Verwijdert het eigen account volledig: bestanden, rijen, profiel en login. */
+export async function deleteMyAccount(): Promise<void> {
+  const res = await fetch("/api/delete-account", {
+    method: "POST",
+    headers: await authHeaders(),
+  });
+  if (!res.ok) {
+    let msg = "Verwijderen is mislukt";
+    try {
+      const j = await res.json();
+      if (j?.error) msg = j.error;
+    } catch {
+      // geen JSON-body; standaardmelding gebruiken
+    }
+    throw new Error(msg);
+  }
+}

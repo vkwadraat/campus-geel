@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacybeleid — BlokHub</title>
+<style>
+  :root { --kul:#1e64c8; --navy:#15223b; --ink:#2a3550; --muted:#5b6676; --line:#e3e8f0; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#eef2f8; color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif; line-height:1.6; }
+  .wrap { max-width:780px; margin:0 auto; padding:32px 20px 64px; }
+  header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  header svg { width:30px; height:30px; color:var(--navy); }
+  header .name { font-size:24px; font-weight:800; color:var(--navy); }
+  header .name span { color:var(--kul); }
+  h1 { font-size:34px; color:var(--navy); margin:18px 0 4px; letter-spacing:-.5px; }
+  .updated { color:var(--muted); font-size:14px; margin-bottom:28px; }
+  h2 { font-size:20px; color:var(--navy); margin:30px 0 8px; }
+  p, li { font-size:16px; }
+  ul { padding-left:20px; }
+  a { color:var(--kul); }
+  .fill { background:#fff6d6; padding:0 4px; border-radius:4px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:8px 26px 26px;
+    box-shadow:0 10px 30px rgba(21,34,59,.05); }
+  .back { display:inline-block; margin-top:28px; color:var(--kul); text-decoration:none; font-weight:600; }
+  footer { margin-top:40px; color:var(--muted); font-size:13px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3L1.5 8L12 13L22.5 8L12 3Z" fill="currentColor" stroke="none"/>
+      <path d="M5 10.2V14.2C5 14.2 8 16.5 12 16.5C16 16.5 19 14.2 19 14.2V10.2"/>
+      <path d="M22 8.2V12.5"/><circle cx="22" cy="13.2" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+    <span class="name">Blok<span>Hub</span></span>
+  </header>
+
+  <h1>Privacybeleid</h1>
+  <p class="updated">Laatst bijgewerkt: 3 oktober 2026</p>
+
+  <div class="card">
+    <h2>1. Wie zijn wij?</h2>
+    <p>BlokHub is een studentenplatform waar studenten van KU Leuven studiemateriaal
+    (samenvattingen, examens, oefeningen, notities) met elkaar delen. De
+    verantwoordelijke voor de verwerking van je gegevens is
+    <span class="fill">[jouw volledige naam of de naam van je onderneming]</span>.
+    Vragen over je gegevens? Mail naar
+    <span class="fill">[jouw contact-e-mailadres]</span>.</p>
+
+    <h2>2. Welke gegevens verzamelen we?</h2>
+    <ul>
+      <li><strong>Je account:</strong> je KU Leuven-e-mailadres en een versleuteld wachtwoord
+      (dat beheren wij niet rechtstreeks, dat doet onze inlogdienst Supabase).</li>
+      <li><strong>Materiaal dat je uploadt:</strong> het bestand zelf en de info erbij
+      (vak, titel, beschrijving, bestandsnaam, datum) en dat jij het hebt geüpload.</li>
+      <li><strong>Moderatie-info:</strong> of een upload is goedgekeurd of geweigerd, en door wie.</li>
+      <li><strong>Technische gegevens:</strong> gegevens die automatisch nodig zijn om de
+      website veilig te laten werken (bv. een tijdelijke inlogsessie).</li>
+    </ul>
+
+    <h2>3. Waarom verwerken we die gegevens?</h2>
+    <ul>
+      <li>Om je toegang te geven tot het platform en het materiaal.</li>
+      <li>Om uploads te kunnen modereren en misbruik tegen te gaan.</li>
+      <li>Om de dienst veilig en werkend te houden.</li>
+    </ul>
+    <p>De rechtsgrond hiervoor is je toestemming (die je geeft bij registratie) en ons
+    gerechtvaardigd belang om een veilig platform aan te bieden.</p>
+
+    <h2>4. Waar staan je gegevens?</h2>
+    <p>We werken met twee verwerkers die je gegevens binnen de <strong>Europese Unie</strong>
+    opslaan:</p>
+    <ul>
+      <li><strong>Supabase</strong> — voor je account en de info over het materiaal.</li>
+      <li><strong>Cloudflare R2</strong> (regio Europa) — voor de geüploade bestanden zelf.</li>
+    </ul>
+    <p>We verkopen je gegevens niet en geven ze niet door aan derden voor reclame.</p>
+
+    <h2>5. Hoe lang bewaren we ze?</h2>
+    <p>Zolang je een account hebt. Verwijder je je account, of vraag je om verwijdering,
+    dan wissen we je persoonsgegevens en het materiaal dat je uploadde (tenzij we iets
+    wettelijk langer moeten bewaren).</p>
+
+    <h2>6. Je rechten</h2>
+    <p>Je hebt het recht om je gegevens in te zien, te laten verbeteren of te laten
+    verwijderen, en om bezwaar te maken tegen de verwerking. Je kunt ook vragen om een
+    kopie van je gegevens. Om een van deze rechten uit te oefenen — of om je account te
+    laten verwijderen — mail je naar <span class="fill">[jouw contact-e-mailadres]</span>.
+    We reageren binnen 30 dagen.</p>
+    <p>Ben je niet tevreden over hoe we met je gegevens omgaan? Dan kun je een klacht
+    indienen bij de Belgische <strong>Gegevensbeschermingsautoriteit</strong>
+    (www.gegevensbeschermingsautoriteit.be).</p>
+
+    <h2>7. Wijzigingen</h2>
+    <p>We kunnen dit privacybeleid aanpassen. De datum bovenaan toont wanneer het laatst
+    is bijgewerkt. Bij belangrijke wijzigingen laten we dat weten via het platform.</p>
+  </div>
+
+  <a class="back" href="/">← Terug naar BlokHub</a>
+  <footer>BlokHub · onafhankelijk studentenplatform, niet officieel verbonden aan KU Leuven.</footer>
+</div>
+</body>
+</html>

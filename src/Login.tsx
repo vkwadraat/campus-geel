@@ -25,11 +25,13 @@ export default function Login() {
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
   const [busy, setBusy] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   function switchMode(next: Mode) {
     setMode(next);
     setError("");
     setInfo("");
+    setAgreed(false);
   }
 
   async function submit(event: FormEvent) {
@@ -45,6 +47,11 @@ export default function Login() {
 
     if (mode !== "reset" && password.length < 8) {
       setError("Je wachtwoord moet minstens 8 tekens hebben.");
+      return;
+    }
+
+    if (mode === "register" && !agreed) {
+      setError("Je moet akkoord gaan met de voorwaarden en het privacybeleid.");
       return;
     }
 
@@ -111,7 +118,7 @@ export default function Login() {
           <input
             type="email"
             autoComplete="email"
-            placeholder="voornaam.naam@student.kuleuven.be"
+            placeholder="r0123456@student.kuleuven.be"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -127,6 +134,22 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+          </label>
+        )}
+
+        {mode === "register" && (
+          <label className="login-consent">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            />
+            <span>
+              Ik ga akkoord met de{" "}
+              <a href="/voorwaarden.html" target="_blank" rel="noreferrer">gebruiksvoorwaarden</a>
+              {" "}en het{" "}
+              <a href="/privacy.html" target="_blank" rel="noreferrer">privacybeleid</a>.
+            </span>
           </label>
         )}
 

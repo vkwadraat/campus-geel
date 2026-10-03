@@ -18,9 +18,10 @@ import {
   uploadMaterial,
   reviewMaterial,
   removeMaterial,
+  deleteMyAccount,
   type NewMaterialInput,
 } from "./lib/materials";
-import { submitCampusRequest } from "./lib/campusRequests.ts";
+import { submitCampusRequest } from "./lib/campusRequests";
 
 import "./index.css";
 
@@ -276,6 +277,22 @@ function App({
     setSidebarOpen(false);
   }
 
+  async function handleDeleteAccount() {
+    const sure = window.confirm(
+      "Weet je zeker dat je je account wil verwijderen?\n\n" +
+        "Je login, je profiel en al het materiaal dat je uploadde worden " +
+        "definitief verwijderd. Dit kan niet ongedaan gemaakt worden."
+    );
+    if (!sure) return;
+    try {
+      await deleteMyAccount();
+      alert("Je account is verwijderd.");
+      onSignOut();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Verwijderen is mislukt.");
+    }
+  }
+
   async function approveMaterial(id: string) {
     try {
       await reviewMaterial(id, "approved");
@@ -360,6 +377,9 @@ function App({
           <span className="user-email">{userEmail}</span>
           <button className="secondary-button" onClick={onSignOut}>
             Uitloggen
+          </button>
+          <button className="account-delete" onClick={handleDeleteAccount}>
+            Account verwijderen
           </button>
         </div>
       </header>
@@ -920,6 +940,15 @@ function Home({
       <p className="home-footnote">
         {programmes.length} opleidingen · {approvedCount} stuks materiaal beschikbaar
       </p>
+
+      <footer className="site-footer">
+        <span>BlokHub · onafhankelijk studentenplatform, niet officieel verbonden aan KU Leuven</span>
+        <span className="site-footer-links">
+          <a href="/privacy.html" target="_blank" rel="noreferrer">Privacybeleid</a>
+          <span aria-hidden="true">·</span>
+          <a href="/voorwaarden.html" target="_blank" rel="noreferrer">Gebruiksvoorwaarden</a>
+        </span>
+      </footer>
     </div>
   );
 }
