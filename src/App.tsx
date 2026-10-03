@@ -898,6 +898,98 @@ function CampusRequestForm({ defaultEmail }: { defaultEmail: string }) {
   );
 }
 
+/* Eén campuskaart op de home. Staat op top-niveau zodat de kaarten NIET
+   opnieuw opgebouwd worden (en de pagina niet verspringt) bij het uitklappen. */
+function CampusCard({
+  title,
+  icon,
+  photo,
+  gradient,
+  programmeIds,
+  position,
+  openCardProgramme,
+  setOpenCardProgramme,
+  onOpenProgramme,
+}: {
+  title: string;
+  icon: string;
+  photo?: string;
+  gradient: string;
+  programmeIds: string[];
+  position: "left" | "right";
+  openCardProgramme: string | null;
+  setOpenCardProgramme: (id: string | null) => void;
+  onOpenProgramme: (id: string, trackId?: string) => void;
+}) {
+  const items = programmeIds
+    .map((id) => programmes.find((p) => p.id === id))
+    .filter((p): p is Programme => Boolean(p));
+
+  return (
+    <div className={`campus-card campus-${position}`} style={{ background: gradient }}>
+      <div
+        className="campus-photo"
+        style={photo ? { backgroundImage: `url("${photo}")` } : undefined}
+        aria-hidden="true"
+      />
+      <div className="campus-body">
+        <span className="campus-name">
+          <span className="campus-icon" aria-hidden="true">{icon}</span>
+          {title}
+        </span>
+
+        <div className="campus-programmes">
+          {items.map((programme) => {
+            const multi = programme.tracks.length > 1;
+            const open = openCardProgramme === programme.id;
+            const accent = programmeColor(programme.id);
+            return (
+              <div className="campus-programme-item" key={programme.id}>
+                <button
+                  type="button"
+                  className="campus-programme"
+                  style={{ borderLeftColor: accent }}
+                  onClick={() =>
+                    multi
+                      ? setOpenCardProgramme(open ? null : programme.id)
+                      : onOpenProgramme(programme.id)
+                  }
+                  aria-expanded={multi ? open : undefined}
+                >
+                  <strong>{programme.name}</strong>
+                  <span>
+                    {multi ? (
+                      <>Kies je richting <span className="arrow">{open ? "▾" : "▸"}</span></>
+                    ) : (
+                      <>Bekijk vakken <span className="arrow">→</span></>
+                    )}
+                  </span>
+                </button>
+
+                {multi && open && (
+                  <div className="campus-tracks">
+                    {programme.tracks.map((track) => (
+                      <button
+                        type="button"
+                        key={track.id}
+                        className="campus-track"
+                        style={{ borderLeftColor: accent }}
+                        onClick={() => onOpenProgramme(programme.id, track.id)}
+                      >
+                        {track.name} <span className="arrow">→</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Home({
   materials,
   isModerator,
@@ -964,90 +1056,6 @@ function Home({
     },
   ];
 
-  function CampusCard({
-    title,
-    icon,
-    photo,
-    gradient,
-    programmeIds,
-    position,
-  }: {
-    title: string;
-    icon: string;
-    photo?: string;
-    gradient: string;
-    programmeIds: string[];
-    position: "left" | "right";
-  }) {
-    const items = programmeIds
-      .map((id) => programmes.find((p) => p.id === id))
-      .filter((p): p is Programme => Boolean(p));
-
-    return (
-      <div className={`campus-card campus-${position}`} style={{ background: gradient }}>
-        <div
-          className="campus-photo"
-          style={photo ? { backgroundImage: `url("${photo}")` } : undefined}
-          aria-hidden="true"
-        />
-        <div className="campus-body">
-          <span className="campus-name">
-            <span className="campus-icon" aria-hidden="true">{icon}</span>
-            {title}
-          </span>
-
-          <div className="campus-programmes">
-            {items.map((programme) => {
-              const multi = programme.tracks.length > 1;
-              const open = openCardProgramme === programme.id;
-              const accent = programmeColor(programme.id);
-              return (
-                <div className="campus-programme-item" key={programme.id}>
-                  <button
-                    type="button"
-                    className="campus-programme"
-                    style={{ borderLeftColor: accent }}
-                    onClick={() =>
-                      multi
-                        ? setOpenCardProgramme(open ? null : programme.id)
-                        : onOpenProgramme(programme.id)
-                    }
-                    aria-expanded={multi ? open : undefined}
-                  >
-                    <strong>{programme.name}</strong>
-                    <span>
-                      {multi ? (
-                        <>Kies je richting <span className="arrow">{open ? "▾" : "▸"}</span></>
-                      ) : (
-                        <>Bekijk vakken <span className="arrow">→</span></>
-                      )}
-                    </span>
-                  </button>
-
-                  {multi && open && (
-                    <div className="campus-tracks">
-                      {programme.tracks.map((track) => (
-                        <button
-                          type="button"
-                          key={track.id}
-                          className="campus-track"
-                          style={{ borderLeftColor: accent }}
-                          onClick={() => onOpenProgramme(programme.id, track.id)}
-                        >
-                          {track.name} <span className="arrow">→</span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="home">
       <div className="home-bg" aria-hidden="true">
@@ -1090,6 +1098,9 @@ function Home({
               gradient={card.gradient}
               programmeIds={card.programmeIds}
               position={index % 2 === 0 ? "left" : "right"}
+              openCardProgramme={openCardProgramme}
+              setOpenCardProgramme={setOpenCardProgramme}
+              onOpenProgramme={onOpenProgramme}
             />
           ))}
         </div>
