@@ -2454,3 +2454,69 @@ button.material-section:hover .material-section-cta {
 .campus-track .arrow {
   opacity: 0.55;
 }
+/* ============================================================================
+   BlokHub — like-knop bij elk document (meeste likes bovenaan)
+   Plak dit onderaan je bestaande src/index.css.
+   ============================================================================ */
+
+.material-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.material-open {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+.material-open > div {
+  min-width: 0;
+}
+.material-open strong {
+  display: block;
+}
+.material-open span,
+.material-open small {
+  display: block;
+}
+.material-open-cta {
+  flex: none;
+  color: var(--kul, #1e64c8);
+  font-weight: 600;
+}
+
+.like-button {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border: 1px solid var(--line, #e3e8f0);
+  border-radius: 999px;
+  background: #fff;
+  color: #5b6676;
+  font: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.like-button span {
+  font-size: 15px;
+  line-height: 1;
+}
+.like-button:hover {
+  border-color: #f4a9c0;
+  color: #e11d48;
+}
+.like-button.liked {
+  background: #ffe4ec;
+  border-color: #f4a9c0;
+  color: #e11d48;
+}

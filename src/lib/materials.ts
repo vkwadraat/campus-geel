@@ -199,3 +199,37 @@ export async function deleteMyAccount(): Promise<void> {
     throw new Error(msg);
   }
 }
+
+/* ---------------------------------------------------------------------------
+   LIKES — studenten kunnen materiaal "nuttig" vinden; meeste likes bovenaan.
+   --------------------------------------------------------------------------- */
+
+/** Haalt per materiaal het aantal likes op + welke de huidige gebruiker gaf. */
+export async function fetchLikes(): Promise<{ counts: Record<string, number>; mine: string[] }> {
+  const { data, error } = await supabase.from("material_likes").select("material_id, user_id");
+  if (error || !data) return { counts: {}, mine: [] };
+
+  const { data: userData } = await supabase.auth.getUser();
+  const myId = userData.user?.id;
+
+  const counts: Record<string, number> = {};
+  const mine: string[] = [];
+  for (const row of data as { material_id: string; user_id: string }[]) {
+    counts[row.material_id] = (counts[row.material_id] ?? 0) + 1;
+    if (myId && row.user_id === myId) mine.push(row.material_id);
+  }
+  return { counts, mine };
+}
+
+export async function likeMaterial(materialId: string): Promise<void> {
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user) throw new Error("Niet ingelogd");
+  const { error } = await supabase.from("material_likes").insert({ material_id: materialId });
+  // Dubbele like (zelfde gebruiker) negeren we.
+  if (error && !/duplicate|unique/i.test(error.message)) throw error;
+}
+
+export async function unlikeMaterial(materialId: string): Promise<void> {
+  const { error } = await supabase.from("material_likes").delete().eq("material_id", materialId);
+  if (error) throw error;
+}

@@ -19,6 +19,9 @@ import {
   reviewMaterial,
   removeMaterial,
   deleteMyAccount,
+  fetchLikes,
+  likeMaterial,
+  unlikeMaterial,
   type NewMaterialInput,
 } from "./lib/materials";
 import { submitCampusRequest } from "./lib/campusRequests";
@@ -174,6 +177,8 @@ function App({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [progSearch, setProgSearch] = useState("");
+  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
+  const [likedByMe, setLikedByMe] = useState<Set<string>>(new Set());
 
   const accountType = userEmail.toLowerCase().endsWith("@student.kuleuven.be")
     ? "Student"
@@ -193,6 +198,44 @@ function App({
       setMaterials(await fetchMaterials());
     } catch (error) {
       console.error("Materiaal laden mislukt", error);
+    }
+    try {
+      const { counts, mine } = await fetchLikes();
+      setLikeCounts(counts);
+      setLikedByMe(new Set(mine));
+    } catch (error) {
+      console.error("Likes laden mislukt", error);
+    }
+  }
+
+  async function toggleLike(id: string) {
+    const liked = likedByMe.has(id);
+    // Optimistisch bijwerken.
+    setLikedByMe((prev) => {
+      const next = new Set(prev);
+      if (liked) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+    setLikeCounts((prev) => ({
+      ...prev,
+      [id]: Math.max(0, (prev[id] ?? 0) + (liked ? -1 : 1)),
+    }));
+    try {
+      if (liked) await unlikeMaterial(id);
+      else await likeMaterial(id);
+    } catch {
+      // Terugdraaien bij fout.
+      setLikedByMe((prev) => {
+        const next = new Set(prev);
+        if (liked) next.add(id);
+        else next.delete(id);
+        return next;
+      });
+      setLikeCounts((prev) => ({
+        ...prev,
+        [id]: Math.max(0, (prev[id] ?? 0) + (liked ? 1 : -1)),
+      }));
     }
   }
 
@@ -711,6 +754,9 @@ function App({
         <CourseModal
           course={selectedCourse}
           materials={materials}
+          likeCounts={likeCounts}
+          likedByMe={likedByMe}
+          onToggleLike={toggleLike}
           onClose={() => setSelectedCourse(null)}
           onUpload={() => openUpload(selectedCourse.id)}
         />
@@ -1250,11 +1296,17 @@ function Curriculum({
 function CourseModal({
   course,
   materials,
+  likeCounts,
+  likedByMe,
+  onToggleLike,
   onClose,
   onUpload,
 }: {
   course: Course;
   materials: CourseMaterial[];
+  likeCounts: Record<string, number>;
+  likedByMe: Set<string>;
+  onToggleLike: (id: string) => void;
   onClose: () => void;
   onUpload: () => void;
 }) {
@@ -1271,7 +1323,14 @@ function CourseModal({
     grouped[material.type]?.push(material);
   });
 
-  const detailItems = openType ? grouped[openType] : [];
+  // Meeste likes bovenaan, daarna het recentst.
+  const detailItems = openType
+    ? [...grouped[openType]].sort(
+        (a, b) =>
+          (likeCounts[b.id] ?? 0) - (likeCounts[a.id] ?? 0) ||
+          b.uploadedAt.localeCompare(a.uploadedAt)
+      )
+    : [];
 
   return (
     <div className="modal-backdrop" onMouseDown={onClose}>
@@ -1321,21 +1380,33 @@ function CourseModal({
             ) : (
               <div className="material-list big">
                 {detailItems.map((material) => (
-                  <a
-                    key={material.id}
-                    href={material.fileUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="material-item"
-                  >
-                    <div>
-                      <strong>{material.title}</strong>
-                      <span>{material.fileName}</span>
-                      {material.description && <small>{material.description}</small>}
-                    </div>
+                  <div key={material.id} className="material-item">
+                    <a
+                      className="material-open"
+                      href={material.fileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <div>
+                        <strong>{material.title}</strong>
+                        <span>{material.fileName}</span>
+                        {material.description && <small>{material.description}</small>}
+                      </div>
+                      <span className="material-open-cta">Open →</span>
+                    </a>
 
-                    <span>Open →</span>
-                  </a>
+                    <button
+                      type="button"
+                      className={
+                        likedByMe.has(material.id) ? "like-button liked" : "like-button"
+                      }
+                      onClick={() => onToggleLike(material.id)}
+                      aria-pressed={likedByMe.has(material.id)}
+                      title="Vind ik nuttig"
+                    >
+                      <span aria-hidden="true">♥</span> {likeCounts[material.id] ?? 0}
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
