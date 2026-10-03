@@ -105,6 +105,16 @@ function programmeColor(id: string) {
   return PROGRAMME_COLORS[id] ?? PROGRAMME_FALLBACK;
 }
 
+/* De verantwoordelijke student per campus/faculteit (voor "contacteer"-mailto). */
+function programmeContact(programme: Programme | undefined): string {
+  if (!programme) return "hannelore.persoons@student.kuleuven.be";
+  if (programme.campus === "Geel") return "hannelore.persoons@student.kuleuven.be";
+  const fac = `${programme.faculty ?? ""} ${programme.id}`.toLowerCase();
+  if (fac.includes("letter")) return "joni.dams@student.kuleuven.be";
+  // Overige Leuven-opleidingen (Geneeskunde / biomedische wetenschappen)
+  return "manon.vanhees@student.kuleuven.be";
+}
+
 /*
  * Campusfoto's staan in  public/campus/  (geel.jpg, geneeskunde.jpg)
  * en worden per kaart ingesteld in de Home-component hieronder.
@@ -809,6 +819,21 @@ function App({
                 {selectedProgramme?.description ??
                   "Bekijk vakken en deel studiemateriaal met medestudenten."}
               </p>
+
+              {selectedProgramme && (
+                <a
+                  className="contact-pill"
+                  href={`mailto:${programmeContact(selectedProgramme)}?subject=${encodeURIComponent(
+                    `BlokHub — vraag over ${selectedProgramme.name}`
+                  )}`}
+                >
+                  <span aria-hidden="true">✉️</span>
+                  Vragen? Contacteer de verantwoordelijke
+                  <span className="contact-pill-mail">
+                    {programmeContact(selectedProgramme)}
+                  </span>
+                </a>
+              )}
             </div>
           </div>
 
