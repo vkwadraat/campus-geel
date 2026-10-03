@@ -306,13 +306,17 @@ function App({
   }
 
   // Vanuit het startscherm naar een opleiding springen.
-  function openProgramme(id: string) {
+  function openProgramme(id: string, trackId?: string) {
     const programme = programmes.find((p) => p.id === id);
     if (!programme) return;
 
+    const track = trackId
+      ? programme.tracks.find((t) => t.id === trackId)
+      : undefined;
+
     setCampus(programme.campus);
     setProgrammeId(programme.id);
-    setTrackId(programme.tracks[0]?.id ?? "");
+    setTrackId(track?.id ?? programme.tracks[0]?.id ?? "");
     setPhaseId("all");
     setSelectedCourse(null);
     setView("courses");
@@ -860,13 +864,16 @@ function Home({
   materials: CourseMaterial[];
   isModerator: boolean;
   userEmail: string;
-  onOpenProgramme: (id: string) => void;
+  onOpenProgramme: (id: string, trackId?: string) => void;
   onBrowse: () => void;
   onUpload: () => void;
   onModerate: () => void;
 }) {
   const approvedCount = materials.filter((m) => m.status === "approved").length;
   const pendingCount = materials.filter((m) => m.status === "pending").length;
+
+  // Welke opleiding op de home-kaarten is uitgeklapt (toont de richtingen).
+  const [openCardProgramme, setOpenCardProgramme] = useState<string | null>(null);
 
   // Eén kaart per campuslocatie. Elke kaart heeft een titel, eigen foto,
   // kleurgradient en een lijst opleidingen.
@@ -944,19 +951,49 @@ function Home({
           </span>
 
           <div className="campus-programmes">
-            {items.map((programme) => (
-              <button
-                className="campus-programme"
-                key={programme.id}
-                style={{ borderLeftColor: programmeColor(programme.id) }}
-                onClick={() => onOpenProgramme(programme.id)}
-              >
-                <strong>{programme.name}</strong>
-                <span>
-                  Bekijk vakken <span className="arrow">→</span>
-                </span>
-              </button>
-            ))}
+            {items.map((programme) => {
+              const multi = programme.tracks.length > 1;
+              const open = openCardProgramme === programme.id;
+              const accent = programmeColor(programme.id);
+              return (
+                <div className="campus-programme-item" key={programme.id}>
+                  <button
+                    className="campus-programme"
+                    style={{ borderLeftColor: accent }}
+                    onClick={() =>
+                      multi
+                        ? setOpenCardProgramme(open ? null : programme.id)
+                        : onOpenProgramme(programme.id)
+                    }
+                    aria-expanded={multi ? open : undefined}
+                  >
+                    <strong>{programme.name}</strong>
+                    <span>
+                      {multi ? (
+                        <>Kies je richting <span className="arrow">{open ? "▾" : "▸"}</span></>
+                      ) : (
+                        <>Bekijk vakken <span className="arrow">→</span></>
+                      )}
+                    </span>
+                  </button>
+
+                  {multi && open && (
+                    <div className="campus-tracks">
+                      {programme.tracks.map((track) => (
+                        <button
+                          key={track.id}
+                          className="campus-track"
+                          style={{ borderLeftColor: accent }}
+                          onClick={() => onOpenProgramme(programme.id, track.id)}
+                        >
+                          {track.name} <span className="arrow">→</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

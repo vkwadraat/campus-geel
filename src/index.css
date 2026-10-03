@@ -2411,3 +2411,46 @@ button.material-section:hover .material-section-cta {
   color: #fff;
   font-weight: 700;
 }
+/* ============================================================================
+   BlokHub — uitklapbare richtingen op de home-campuskaarten
+   Plak dit onderaan je bestaande src/index.css.
+   ============================================================================ */
+
+.campus-programme-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.campus-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0 2px;
+  padding-left: 12px;
+}
+
+.campus-track {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  padding: 10px 14px;
+  border: none;
+  border-left: 4px solid currentColor;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #15223b;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+.campus-track:hover {
+  background: #fff;
+  transform: translateX(2px);
+}
+.campus-track .arrow {
+  opacity: 0.55;
+}
