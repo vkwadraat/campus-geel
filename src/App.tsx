@@ -25,7 +25,7 @@ import {
   type NewMaterialInput,
 } from "./lib/materials";
 import { submitCampusRequest } from "./lib/campusRequests";
-import { submitMissingReport } from "./lib/missingReports.ts";
+import { submitMissingReport } from "./lib/missingReports";
 
 import "./index.css";
 
@@ -479,7 +479,7 @@ function App({
       {/* TOPBAR */}
       <header className="topbar">
         <div className="brand">
-          {view === "courses" && (
+          {view === "courses" && !selectedCourse && (
             <button
               className="mobile-menu"
               aria-label="Menu"
@@ -614,7 +614,17 @@ function App({
         </div>
       </header>
 
-      {view === "home" ? (
+      {selectedCourse ? (
+        <CoursePage
+          course={selectedCourse}
+          materials={materials}
+          likeCounts={likeCounts}
+          likedByMe={likedByMe}
+          onToggleLike={toggleLike}
+          onBack={() => setSelectedCourse(null)}
+          onUpload={() => openUpload(selectedCourse.id)}
+        />
+      ) : view === "home" ? (
         <Home
           materials={materials}
           isModerator={isModerator}
@@ -626,8 +636,26 @@ function App({
         />
       ) : (
       <main className="layout">
+        {/* Donkere laag achter de open zijbalk (mobiel): tik om te sluiten */}
+        {sidebarOpen && (
+          <div
+            className="sidebar-overlay"
+            onClick={() => setSidebarOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+
         {/* SIDEBAR */}
         <aside className={sidebarOpen ? "sidebar open" : "sidebar"}>
+          <button
+            type="button"
+            className="sidebar-close"
+            aria-label="Menu sluiten"
+            onClick={() => setSidebarOpen(false)}
+          >
+            ✕ Sluiten
+          </button>
+
           <div className="sidebar-section">
             <span className="sidebar-label">Campus</span>
 
@@ -737,6 +765,18 @@ function App({
               <span>In behandeling</span>
               <strong>{pendingMaterials.length}</strong>
             </div>
+
+            <span
+              style={{
+                display: "block",
+                marginTop: "12px",
+                fontSize: "12px",
+                color: "var(--muted)",
+                textAlign: "center",
+              }}
+            >
+              © {new Date().getFullYear()} BlokHub
+            </span>
           </div>
         </aside>
 
@@ -846,18 +886,6 @@ function App({
           )}
         </section>
       </main>
-      )}
-
-      {selectedCourse && (
-        <CourseModal
-          course={selectedCourse}
-          materials={materials}
-          likeCounts={likeCounts}
-          likedByMe={likedByMe}
-          onToggleLike={toggleLike}
-          onClose={() => setSelectedCourse(null)}
-          onUpload={() => openUpload(selectedCourse.id)}
-        />
       )}
 
       {uploadOpen && (
@@ -1368,7 +1396,7 @@ function Home({
       </p>
 
       <footer className="site-footer">
-        <span>BlokHub · onafhankelijk studentenplatform, niet officieel verbonden aan KU Leuven</span>
+        <span>© {new Date().getFullYear()} BlokHub · onafhankelijk studentenplatform, niet officieel verbonden aan KU Leuven</span>
         <span className="site-footer-links">
           <a href="/privacy.html" target="_blank" rel="noreferrer">Privacybeleid</a>
           <span aria-hidden="true">·</span>
@@ -1500,16 +1528,16 @@ function Curriculum({
 }
 
 /* ============================================================================
-   COURSE MODAL
+   COURSE PAGE — volledige vakpagina met categorie-tabs bovenaan
 ============================================================================ */
 
-function CourseModal({
+function CoursePage({
   course,
   materials,
   likeCounts,
   likedByMe,
   onToggleLike,
-  onClose,
+  onBack,
   onUpload,
 }: {
   course: Course;
@@ -1517,12 +1545,9 @@ function CourseModal({
   likeCounts: Record<string, number>;
   likedByMe: Set<string>;
   onToggleLike: (id: string) => void;
-  onClose: () => void;
+  onBack: () => void;
   onUpload: () => void;
 }) {
-  // Welke categorie is geopend? null = het overzicht met alle categorieën.
-  const [openType, setOpenType] = useState<MaterialType | null>(null);
-
   const approved = getApprovedMaterials(materials, course.id);
 
   const grouped = Object.fromEntries(
@@ -1533,130 +1558,104 @@ function CourseModal({
     grouped[material.type]?.push(material);
   });
 
+  // Open standaard op de eerste categorie die materiaal heeft (anders de eerste).
+  const firstWithMaterial =
+    MATERIAL_TYPES.find((t) => grouped[t].length > 0) ?? MATERIAL_TYPES[0];
+  const [activeType, setActiveType] = useState<MaterialType>(firstWithMaterial);
+
   // Meeste likes bovenaan, daarna het recentst.
-  const detailItems = openType
-    ? [...grouped[openType]].sort(
-        (a, b) =>
-          (likeCounts[b.id] ?? 0) - (likeCounts[a.id] ?? 0) ||
-          b.uploadedAt.localeCompare(a.uploadedAt)
-      )
-    : [];
+  const items = [...grouped[activeType]].sort(
+    (a, b) =>
+      (likeCounts[b.id] ?? 0) - (likeCounts[a.id] ?? 0) ||
+      b.uploadedAt.localeCompare(a.uploadedAt)
+  );
 
   return (
-    <div className="modal-backdrop" onMouseDown={onClose}>
-      <div className="modal large" onMouseDown={(event) => event.stopPropagation()}>
-        <div className="modal-header">
-          <div>
-            {openType ? (
-              <>
-                <span className="eyebrow">{course.name}</span>
-                <h2>
-                  {materialTypeIcons[openType]} {materialTypeLabels[openType]}
-                </h2>
-              </>
-            ) : (
-              <>
-                <span className="eyebrow">
-                  {course.code} · {course.credits} ECTS
-                </span>
-                <h2>{course.name}</h2>
-              </>
-            )}
-          </div>
+    <main className="course-page">
+      <div className="course-page-head">
+        <button className="back-button" onClick={onBack}>
+          ← Terug naar vakken
+        </button>
 
-          <button className="close-button" aria-label="Sluiten" onClick={onClose}>
-            ×
-          </button>
+        <div className="course-page-title">
+          <span className="eyebrow">
+            {course.code} · {course.credits} ECTS
+          </span>
+          <h1>{course.name}</h1>
         </div>
 
-        {openType ? (
-          /* ---------- Detailpagina van één categorie ---------- */
-          <>
-            <button className="back-button" onClick={() => setOpenType(null)}>
-              ← Terug naar overzicht
-            </button>
+        <button className="primary-button" onClick={onUpload}>
+          + Uploaden
+        </button>
+      </div>
 
-            {detailItems.length === 0 ? (
-              <div className="category-empty">
-                <span className="category-empty-icon">{materialTypeIcons[openType]}</span>
-                <strong>Nog geen materiaal</strong>
-                <span>
-                  Er is nog geen goedgekeurd materiaal in deze categorie voor dit vak.
-                </span>
-                <button className="primary-button" onClick={onUpload}>
-                  + Als eerste uploaden
+      <div className="course-tabs" role="tablist">
+        {MATERIAL_TYPES.map((type) => {
+          const count = grouped[type].length;
+          const active = type === activeType;
+          return (
+            <button
+              key={type}
+              role="tab"
+              aria-selected={active}
+              className={active ? "course-tab active" : "course-tab"}
+              onClick={() => setActiveType(type)}
+            >
+              <span className="course-tab-icon" aria-hidden="true">
+                {materialTypeIcons[type]}
+              </span>
+              <span className="course-tab-label">{materialTypeLabels[type]}</span>
+              {count > 0 && <span className="course-tab-count">{count}</span>}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="tab-panel" key={activeType}>
+        {items.length === 0 ? (
+          <div className="category-empty">
+            <span className="category-empty-icon">{materialTypeIcons[activeType]}</span>
+            <strong>Nog geen materiaal</strong>
+            <span>Er is nog geen goedgekeurd materiaal in deze categorie voor dit vak.</span>
+            <button className="primary-button" onClick={onUpload}>
+              + Als eerste uploaden
+            </button>
+          </div>
+        ) : (
+          <div className="material-list big">
+            {items.map((material) => (
+              <div key={material.id} className="material-item">
+                <a
+                  className="material-open"
+                  href={material.fileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <div>
+                    <strong>{material.title}</strong>
+                    <span>{material.fileName}</span>
+                    {material.description && <small>{material.description}</small>}
+                  </div>
+                  <span className="material-open-cta">Open →</span>
+                </a>
+
+                <button
+                  type="button"
+                  className={
+                    likedByMe.has(material.id) ? "like-button liked" : "like-button"
+                  }
+                  onClick={() => onToggleLike(material.id)}
+                  aria-pressed={likedByMe.has(material.id)}
+                  title="Vind ik nuttig"
+                >
+                  <span aria-hidden="true">♥</span> {likeCounts[material.id] ?? 0}
                 </button>
               </div>
-            ) : (
-              <div className="material-list big">
-                {detailItems.map((material) => (
-                  <div key={material.id} className="material-item">
-                    <a
-                      className="material-open"
-                      href={material.fileUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <div>
-                        <strong>{material.title}</strong>
-                        <span>{material.fileName}</span>
-                        {material.description && <small>{material.description}</small>}
-                      </div>
-                      <span className="material-open-cta">Open →</span>
-                    </a>
-
-                    <button
-                      type="button"
-                      className={
-                        likedByMe.has(material.id) ? "like-button liked" : "like-button"
-                      }
-                      onClick={() => onToggleLike(material.id)}
-                      aria-pressed={likedByMe.has(material.id)}
-                      title="Vind ik nuttig"
-                    >
-                      <span aria-hidden="true">♥</span> {likeCounts[material.id] ?? 0}
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          /* ---------- Overzicht met alle categorieën ---------- */
-          <>
-            <div className="category-list">
-              {MATERIAL_TYPES.map((type) => {
-                const count = grouped[type].length;
-
-                return (
-                  <button
-                    className="category-row"
-                    key={type}
-                    onClick={() => setOpenType(type)}
-                  >
-                    <span className="category-icon">{materialTypeIcons[type]}</span>
-                    <span className="category-name">{materialTypeLabels[type]}</span>
-                    {count > 0 && <span className="category-count">{count}</span>}
-                    <span className="category-chevron" aria-hidden="true">›</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="upload-callout">
-              <div>
-                <strong>Heb jij materiaal voor dit vak?</strong>
-                <span>Upload het. Een moderator controleert het eerst.</span>
-              </div>
-
-              <button className="primary-button" onClick={onUpload}>
-                + Uploaden
-              </button>
-            </div>
-          </>
+            ))}
+          </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }
 
@@ -1684,6 +1683,7 @@ function UploadModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -1734,6 +1734,11 @@ function UploadModal({
 
     if (file.size > 20 * 1024 * 1024) {
       setError("Het bestand is groter dan 20 MB.");
+      return;
+    }
+
+    if (!confirmed) {
+      setError("Vink eerst het vakje aan om te bevestigen dat je geen beschermd materiaal uploadt.");
       return;
     }
 
@@ -1863,6 +1868,19 @@ function UploadModal({
           </label>
         </div>
 
+        <label className="upload-confirm">
+          <input
+            type="checkbox"
+            checked={confirmed}
+            onChange={(event) => setConfirmed(event.target.checked)}
+          />
+          <span>
+            Ik bevestig dat dit mijn eigen werk is (of materiaal dat ik vrij mag delen) en dat
+            dit bestand <strong>geen slides, officiële cursusteksten of examenvragen van
+            professoren</strong> bevat.
+          </span>
+        </label>
+
         {error && <div className="form-error">{error}</div>}
 
         <div className="moderation-notice">
@@ -1878,7 +1896,7 @@ function UploadModal({
             Annuleren
           </button>
 
-          <button type="submit" className="primary-button" disabled={busy}>
+          <button type="submit" className="primary-button" disabled={busy || !confirmed}>
             {busy ? "Bezig met uploaden…" : "Upload ter controle"}
           </button>
         </div>

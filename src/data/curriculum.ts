@@ -14,12 +14,9 @@ export type SemesterName = "Semester 1" | "Semester 2" | "Beide semesters";
 
 export type ResourceType =
   | "oefeningen"
-  | "examens"
   | "examenvragen"
   | "notities"
   | "samenvattingen"
-  | "cursus"
-  | "slides"
   | "verbeteringen"
   | "andere";
 
@@ -107,12 +104,9 @@ export const resourceTypes: {
   description: string;
 }[] = [
   { id: "oefeningen", name: "Oefeningen", description: "Oefeningen, werkcolleges en oefenreeksen." },
-  { id: "examens", name: "Examens", description: "Oude examens en examenbundels." },
-  { id: "examenvragen", name: "Examenvragen", description: "Losse examenvragen en oude examenvragen." },
+  { id: "examenvragen", name: "Gereconstrueerde examenvragen", description: "Door studenten zelf gereconstrueerde examenvragen — geen officiële examens of examenbundels van de docent." },
   { id: "notities", name: "Notities", description: "Studentennotities." },
   { id: "samenvattingen", name: "Samenvattingen", description: "Samenvattingen en studiefiches." },
-  { id: "cursus", name: "Cursus", description: "Cursusmateriaal en cursusdocumenten." },
-  { id: "slides", name: "Slides", description: "Slides van lessen en presentaties." },
   { id: "verbeteringen", name: "Verbeteringen", description: "Verbeterde oefeningen en oplossingen." },
   { id: "andere", name: "Andere", description: "Ander relevant studiemateriaal." },
 ];
@@ -151,12 +145,9 @@ export const materialTypeLabels = Object.fromEntries(
 
 export const materialTypeIcons: Record<ResourceType, string> = {
   oefeningen: "✏️",
-  examens: "📝",
   examenvragen: "❓",
   notities: "🗒️",
   samenvattingen: "📄",
-  cursus: "📘",
-  slides: "🖥️",
   verbeteringen: "✅",
   andere: "📁",
 };
