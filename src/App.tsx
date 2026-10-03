@@ -115,6 +115,40 @@ function programmeContact(programme: Programme | undefined): string {
   return "manon.vanhees@student.kuleuven.be";
 }
 
+/* Contactknop: opent de mailclient (mailto) én kopieert het adres naar het
+   klembord als terugval — handig op een laptop zonder ingestelde mail-app. */
+function ContactPill({
+  email,
+  programmeName,
+}: {
+  email: string;
+  programmeName: string;
+}) {
+  const [copied, setCopied] = useState(false);
+  const mailto = `mailto:${email}?subject=${encodeURIComponent(
+    `BlokHub — vraag over ${programmeName}`
+  )}`;
+
+  function handleClick() {
+    // Laat de mailto gewoon doorgaan; kopieer daarnaast het adres als terugval.
+    try {
+      navigator.clipboard?.writeText(email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Klembord niet beschikbaar; de mailto blijft werken.
+    }
+  }
+
+  return (
+    <a className="contact-pill" href={mailto} onClick={handleClick}>
+      <span aria-hidden="true">✉️</span>
+      {copied ? "E-mailadres gekopieerd!" : "Vragen? Contacteer de verantwoordelijke"}
+      <span className="contact-pill-mail">{email}</span>
+    </a>
+  );
+}
+
 /*
  * Campusfoto's staan in  public/campus/  (geel.jpg, geneeskunde.jpg)
  * en worden per kaart ingesteld in de Home-component hieronder.
@@ -821,18 +855,10 @@ function App({
               </p>
 
               {selectedProgramme && (
-                <a
-                  className="contact-pill"
-                  href={`mailto:${programmeContact(selectedProgramme)}?subject=${encodeURIComponent(
-                    `BlokHub — vraag over ${selectedProgramme.name}`
-                  )}`}
-                >
-                  <span aria-hidden="true">✉️</span>
-                  Vragen? Contacteer de verantwoordelijke
-                  <span className="contact-pill-mail">
-                    {programmeContact(selectedProgramme)}
-                  </span>
-                </a>
+                <ContactPill
+                  email={programmeContact(selectedProgramme)}
+                  programmeName={selectedProgramme.name}
+                />
               )}
             </div>
           </div>
