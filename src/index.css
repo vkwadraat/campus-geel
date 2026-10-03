@@ -3386,6 +3386,21 @@ button.material-section:hover .material-section-cta {
     background: rgba(21, 34, 59, 0.45);
     backdrop-filter: blur(1px);
   }
+  /* De vaste zijbalk moet intern kunnen scrollen op mobiel.
+     Expliciete hoogte zodat de inhoud scrolt i.p.v. de balk te laten groeien. */
+  .sidebar {
+    height: calc(100vh - var(--topbar-h));
+    height: calc(100dvh - var(--topbar-h));
+    max-height: calc(100dvh - var(--topbar-h));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-bottom: 28px;
+  }
+  /* Niet laten "vastkleven" onderaan zodat de hele inhoud bereikbaar blijft */
+  .sidebar-bottom {
+    margin-top: 1.25rem;
+  }
   .sidebar-close {
     display: inline-flex;
     align-items: center;
