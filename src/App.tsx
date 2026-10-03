@@ -80,6 +80,8 @@ const PROGRAMME_COLORS: Record<string, string> = {
   "geel-master-biowetenschappen": "#2e7d32", // groen (zoals bachelor)
   "geel-master-industriele-wetenschappen": "#1e64c8", // KU Leuven-blauw
   "leuven-master-biomedische-wetenschappen": "#a4328a", // magenta
+  "leuven-letteren-bachelor": "#c2410c", // terracotta
+  "leuven-letteren-master": "#c2410c",
 };
 
 const PROGRAMME_FALLBACK = "#1e64c8";
@@ -171,6 +173,7 @@ function App({
   const [moderatorOpen, setModeratorOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [progSearch, setProgSearch] = useState("");
 
   const accountType = userEmail.toLowerCase().endsWith("@student.kuleuven.be")
     ? "Student"
@@ -202,6 +205,15 @@ function App({
     () => programmes.filter((p) => p.campus === campus),
     [campus]
   );
+
+  // Zoeken over álle campussen heen in de zijbalk.
+  const shownProgrammes = useMemo(() => {
+    const q = progSearch.trim().toLowerCase();
+    if (!q) return campusProgrammes;
+    return programmes.filter((p) =>
+      `${p.name} ${p.campus} ${p.level}`.toLowerCase().includes(q)
+    );
+  }, [progSearch, campusProgrammes]);
 
   const selectedProgramme = useMemo(
     () => campusProgrammes.find((p) => p.id === programmeId) ?? campusProgrammes[0],
@@ -255,13 +267,16 @@ function App({
   }
 
   function selectProgramme(id: string) {
-    const programme = campusProgrammes.find((p) => p.id === id);
+    // Zoekt over alle campussen (werkt dus ook voor zoekresultaten).
+    const programme = programmes.find((p) => p.id === id);
     if (!programme) return;
 
+    setCampus(programme.campus);
     setProgrammeId(programme.id);
     setTrackId(programme.tracks[0]?.id ?? "");
     setPhaseId("all");
     setSelectedCourse(null);
+    setProgSearch("");
     setSidebarOpen(false);
   }
 
@@ -490,8 +505,16 @@ function App({
           <div className="sidebar-section">
             <span className="sidebar-label">Opleidingen</span>
 
+            <input
+              className="sidebar-search"
+              type="search"
+              value={progSearch}
+              onChange={(e) => setProgSearch(e.target.value)}
+              placeholder="🔎 Zoek een opleiding of campus…"
+            />
+
             <div className="programme-list">
-              {campusProgrammes.map((programme) => (
+              {shownProgrammes.map((programme) => (
                 <button
                   key={programme.id}
                   className={
@@ -502,9 +525,16 @@ function App({
                   onClick={() => selectProgramme(programme.id)}
                 >
                   <strong>{programme.name}</strong>
-                  <span>{programme.level}</span>
+                  <span>
+                    {programme.level}
+                    {progSearch.trim() ? ` · ${programme.campus}` : ""}
+                  </span>
                 </button>
               ))}
+
+              {shownProgrammes.length === 0 && (
+                <p className="sidebar-empty">Geen opleiding gevonden.</p>
+              )}
             </div>
           </div>
 
@@ -843,6 +873,16 @@ function Home({
       programmeIds: [
         "leuven-biomedische-wetenschappen",
         "leuven-master-biomedische-wetenschappen",
+      ],
+    },
+    {
+      title: "Campus Leuven — Letteren",
+      icon: "📖",
+      photo: "/campus/letteren.jpg",
+      gradient: "linear-gradient(135deg, #c2410c, #7c2d12)",
+      programmeIds: [
+        "leuven-letteren-bachelor",
+        "leuven-letteren-master",
       ],
     },
   ];

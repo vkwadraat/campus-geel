@@ -2302,3 +2302,31 @@ button.material-section:hover .material-section-cta {
 .user-dropdown-actions button.danger:hover {
   background: #fdecea;
 }
+/* ============================================================================
+   BlokHub — zoekbalk in de zijbalk (zoekt over alle campussen)
+   Plak dit onderaan je bestaande src/index.css.
+   ============================================================================ */
+
+.sidebar-search {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 2px 0 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--line, #e3e8f0);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink, #15223b);
+  font: inherit;
+  font-size: 14px;
+}
+.sidebar-search:focus {
+  outline: none;
+  border-color: var(--kul, #1e64c8);
+  box-shadow: 0 0 0 3px rgba(30, 100, 200, 0.15);
+}
+
+.sidebar-empty {
+  margin: 6px 2px;
+  font-size: 13px;
+  color: #8a93a3;
+}
