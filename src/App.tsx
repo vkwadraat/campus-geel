@@ -211,9 +211,26 @@ function App({
     const q = progSearch.trim().toLowerCase();
     if (!q) return campusProgrammes;
     return programmes.filter((p) =>
-      `${p.name} ${p.campus} ${p.level}`.toLowerCase().includes(q)
+      `${p.name} ${p.campus} ${p.level} ${p.faculty ?? ""}`.toLowerCase().includes(q)
     );
   }, [progSearch, campusProgrammes]);
+
+  // Groepeer de opleidingen per faculteit (met campus ervoor tijdens het zoeken).
+  const groupedProgrammes = useMemo(() => {
+    const searching = progSearch.trim() !== "";
+    const out: { label: string; items: Programme[] }[] = [];
+    for (const p of shownProgrammes) {
+      const fac = p.faculty ?? p.campus;
+      const label = searching ? `${p.campus} · ${fac}` : fac;
+      let g = out.find((x) => x.label === label);
+      if (!g) {
+        g = { label, items: [] };
+        out.push(g);
+      }
+      g.items.push(p);
+    }
+    return out;
+  }, [shownProgrammes, progSearch]);
 
   const selectedProgramme = useMemo(
     () => campusProgrammes.find((p) => p.id === programmeId) ?? campusProgrammes[0],
@@ -277,7 +294,8 @@ function App({
     setPhaseId("all");
     setSelectedCourse(null);
     setProgSearch("");
-    setSidebarOpen(false);
+    // Zijbalk blijft open zodat de richtingen eronder uitklappen (op mobiel
+    // sluit ze pas wanneer je een richting kiest, in selectTrack).
   }
 
   function selectTrack(id: string) {
@@ -514,22 +532,48 @@ function App({
             />
 
             <div className="programme-list">
-              {shownProgrammes.map((programme) => (
-                <button
-                  key={programme.id}
-                  className={
-                    programme.id === selectedProgramme?.id
-                      ? "programme-button active"
-                      : "programme-button"
-                  }
-                  onClick={() => selectProgramme(programme.id)}
-                >
-                  <strong>{programme.name}</strong>
-                  <span>
-                    {programme.level}
-                    {progSearch.trim() ? ` · ${programme.campus}` : ""}
-                  </span>
-                </button>
+              {groupedProgrammes.map((group) => (
+                <div className="programme-group" key={group.label}>
+                  <span className="sidebar-faculty">{group.label}</span>
+                  {group.items.map((programme) => {
+                    const active = programme.id === selectedProgramme?.id;
+                    return (
+                      <div className="programme-item" key={programme.id}>
+                        <button
+                          className={active ? "programme-button active" : "programme-button"}
+                          onClick={() => selectProgramme(programme.id)}
+                          aria-expanded={active}
+                        >
+                          <strong>{programme.name}</strong>
+                          <span>
+                            {programme.level}
+                            {programme.tracks.length > 0 && (
+                              <span className="programme-caret" aria-hidden="true">
+                                {active ? " ▾" : " ▸"}
+                              </span>
+                            )}
+                          </span>
+                        </button>
+
+                        {active && programme.tracks.length > 0 && (
+                          <div className="track-dropdown">
+                            {programme.tracks.map((track) => (
+                              <button
+                                key={track.id}
+                                className={
+                                  track.id === selectedTrack?.id ? "track-sub active" : "track-sub"
+                                }
+                                onClick={() => selectTrack(track.id)}
+                              >
+                                {track.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               ))}
 
               {shownProgrammes.length === 0 && (
@@ -537,26 +581,6 @@ function App({
               )}
             </div>
           </div>
-
-          {selectedProgramme && (
-            <div className="sidebar-section">
-              <span className="sidebar-label">Richtingen</span>
-
-              <div className="track-list">
-                {selectedProgramme.tracks.map((track) => (
-                  <button
-                    key={track.id}
-                    className={
-                      track.id === selectedTrack?.id ? "track-button active" : "track-button"
-                    }
-                    onClick={() => selectTrack(track.id)}
-                  >
-                    {track.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
           <div className="sidebar-bottom">
             <div className="sidebar-stat">

@@ -54,6 +54,7 @@ export type Programme = {
   campus: Campus;
   academicYear: string;
   description: string;
+  faculty?: string;
   tracks: Track[];
 };
 
@@ -323,6 +324,7 @@ const geelBioOptieVoeding = opt(
 
 export const geelBiowetenschappen: Programme = {
   id: "geel-biowetenschappen",
+  faculty: "Biowetenschappen",
   name: "Bachelor in de biowetenschappen",
   level: "Bachelor",
   campus: "Geel",
@@ -456,6 +458,7 @@ const geelICTFase3 = fase(
 
 export const geelIndustrieleWetenschappen: Programme = {
   id: "geel-industriele-wetenschappen",
+  faculty: "Industriële wetenschappen",
   name: "Bachelor in de industriële wetenschappen",
   level: "Bachelor",
   campus: "Geel",
@@ -794,6 +797,7 @@ const leuvenBMVerbredendeKeuze = opt(
 
 export const leuvenBiomedischeWetenschappen: Programme = {
   id: "leuven-biomedische-wetenschappen",
+  faculty: "Geneeskunde",
   name: "Bachelor in de biomedische wetenschappen",
   level: "Bachelor",
   campus: "Leuven",
@@ -914,6 +918,7 @@ const geelMasterEnergie = track("geel-miw-energie", "Energie", [
 
 export const geelMasterIndustrieleWetenschappen: Programme = {
   id: "geel-master-industriele-wetenschappen",
+  faculty: "Industriële wetenschappen",
   name: "Master in de industriële wetenschappen",
   level: "Master",
   campus: "Geel",
@@ -997,6 +1002,7 @@ const geelMasterVoeding = track("geel-mbio-voeding", "Voedingsindustrie", [
 
 export const geelMasterBiowetenschappen: Programme = {
   id: "geel-master-biowetenschappen",
+  faculty: "Biowetenschappen",
   name: "Master in de biowetenschappen",
   level: "Master",
   campus: "Geel",
@@ -1218,6 +1224,7 @@ const leuvenMasterBmwTrack = track(
 
 export const leuvenMasterBiomedischeWetenschappen: Programme = {
   id: "leuven-master-biomedische-wetenschappen",
+  faculty: "Geneeskunde",
   name: "Master in de biomedische wetenschappen",
   level: "Master",
   campus: "Leuven",
@@ -1232,8 +1239,8 @@ export const leuvenMasterBiomedischeWetenschappen: Programme = {
 
 /* ===========================================================================
    LEUVEN — FACULTEIT LETTEREN (academiejaar 2026-2027)
-   Vakken rechtstreeks uit de officiële KU Leuven-curricula. Richtingen zonder
-   betrouwbare vakkenlijst zijn nog niet opgenomen en worden later aangevuld.
+   Vakken rechtstreeks uit de officiële KU Leuven-curricula, per module/keuzegroep.
+   Richtingen/clusters zonder betrouwbare vakcodes worden later verder aangevuld.
    =========================================================================== */
 
 /** Groep vakken zonder vaste fase/semester-indeling (als één lijst getoond). */
@@ -1241,6 +1248,178 @@ const groep = (id: string, name: string, courses: Course[]): Phase =>
   phase(id, name, [semester(`${id}-b`, "Beide semesters", courses)]);
 
 /* ---- Bachelor ---- */
+
+const letBaTaal = track("leuven-let-ba-taal-letterkunde", "Taal- en Letterkunde", [
+  groep("let-ba-taal-duits", "Duits (56 sp)", [
+    c("F0AB2A", "Geschiedenis van de Duitse literatuur I", 6),
+    c("F0AB3A", "Geschiedenis van de Duitse literatuur II", 6),
+    c("F0WL3A", "Duitse literatuur III: vroegmoderne en moderne literatuur", 4),
+    c("F0WL4A", "Duitse literatuur III: moderne en hedendaagse literatuur", 4),
+    c("F0AC2A", "Duitse taalkunde (systeemlinguïstiek) I", 6),
+    c("F0AC3A", "Duitse taalkunde (systeemlinguïstiek) II", 6),
+    c("F0AC4A", "Duitse taalkunde III: Gesprochenes Deutsch", 4),
+    c("F0AC5A", "Duitse taalkunde III: diachrone systeemlinguïstiek", 4),
+    c("F0AC9A", "Duits: taal & tekst I", 8),
+    c("F0AD2A", "Duits: taal & tekst II", 8),
+  ]),
+  groep("let-ba-taal-engels", "Engels (56 sp)", [
+    c("F0AB8A", "Engelse literatuur I: geschiedenis 600-1800", 6),
+    c("F0AB9A", "Engelse literatuur II: geschiedenis 1800-heden", 6),
+    c("F0AD3A", "Engelse literatuur III: geschiedenis van de Amerikaanse literatuur", 4),
+    c("F0CN8A", "Hedendaagse Engelse literaire teksten I", 3),
+    c("F0CO0A", "Hedendaagse Engelse literaire teksten II", 4),
+    k("F0XS0A", "Engelse literatuur III: Engelstalige wereldliteratuur", 4),
+    k("F0AD4A", "Engelse literatuur III: Shakespeare", 4),
+    k("F0AD5A", "Engelse literatuur III: Topics in de Engelse literatuur", 4),
+    k("F0AD6A", "Engelse literatuur III: Topics in de Amerikaanse literatuur", 4),
+    c("F0AD7A", "Engelse taalkunde I", 6),
+    c("F0AD8A", "Engelse taalkunde II", 6),
+    c("F0AE3A", "Engelse taalkunde III: Geschiedenis van het Engels", 4),
+    c("F0AE2A", "Engelse taalkunde III: Tekstgrammatica", 4),
+    c("F0XX6A", "Engelse taalkunde III: Variëteiten van het Engels", 4),
+    c("F0CN7A", "Engelse Taalbeheersing I", 5),
+    c("F0CN9A", "Engelse Taalbeheersing II", 4),
+  ]),
+  groep("let-ba-taal-frans", "Frans (56 sp)", [
+    c("F0AF0A", "Geschiedenis van de Franse literatuur I (niet ingericht 2026–2027)", 6),
+    c("F0AF1A", "Geschiedenis van de Franse literatuur II", 6),
+    c("F0AF2A", "Franse literatuur III: kritische editie", 4),
+    c("F0AF3A", "Franse literatuur III: Moderne bewerkingen", 4),
+    c("F0AF5A", "Franse literatuur III: 19e en 20e eeuw", 4),
+    c("F0AF8A", "Franse taalkunde I (niet ingericht 2026–2027)", 6),
+    c("F0AF9A", "Franse taalkunde II", 6),
+    c("F0AI9A", "Franse taalkunde III: historische en geografische varianten", 4),
+    c("F0AP9A", "Franse taalkunde III: tekst- en conversatieanalyse", 4),
+    c("F0AG3A", "Frans: taal & tekst I", 8),
+    c("F0AG6A", "Frans: taal & tekst II", 8),
+  ]),
+  groep("let-ba-taal-grieks-vk", "Grieks — met voorkennis", [
+    c("F0BE9A", "Geschiedenis van de Griekse literatuur", 4),
+    c("F0WK9A", "Geschiedenis van Griekenland", 3),
+    c("F0BE8A", "Griekse Literatuur I", 3),
+    c("F0AH9B", "Griekse taalkunde I", 6),
+    c("F0AI4B", "Grieks: taal & tekst I", 4),
+  ]),
+  groep("let-ba-taal-grieks-zvk", "Grieks — zonder voorkennis", [
+    c("F0BE9A", "Geschiedenis van de Griekse literatuur", 4),
+    c("F0WK9A", "Geschiedenis van Griekenland", 3),
+    c("F0ZG7A", "Klassiek Grieks taalverwerving, deel 1", 6),
+    c("F0ZG8A", "Klassiek Grieks: taalverwerving, deel 2", 7),
+  ]),
+  groep("let-ba-taal-grieks-verder", "Grieks — verdere vakken", [
+    c("F0AH3B", "Griekse literatuur IIa: filosofische teksten", 3),
+    c("F0AH6B", "Griekse literatuur IIb: retorische teksten", 3),
+    c("F0AH4A", "Griekse literatuur IIa: epische teksten", 4),
+    c("F0AH7A", "Griekse literatuur IIb: lyrische teksten", 4),
+    c("F0BL4A", "Griekse taalkunde II", 4),
+    c("F0BK4A", "Griekse taalkunde III: synchrone benadering", 4),
+    c("F0WL6A", "Griekse Taalkunde III: diachrone benadering", 4),
+    c("F0BJ7A", "Grieks: taal & tekst IIb", 5),
+    c("F0BL5A", "Grieks: taal & tekst IIa", 5),
+  ]),
+  groep("let-ba-taal-italiaans", "Italiaans (56 sp)", [
+    c("F0AJ0A", "Italiaanse cultuur en samenleving", 4),
+    c("F0AJ1A", "Literaire cultuur in het hedendaagse Italië", 4),
+    c("F0AJ2A", "Italiaanse literatuur II: historisch overzicht", 6),
+    c("F0BK2A", "Italiaanse literatuur III: Het literaire geheugen van Italië", 4),
+    c("F0BK3A", "Italiaanse literatuur IV: woord en beeld", 4),
+    c("F0AJ4A", "Structuur en variatie van de Italiaanse taal", 4),
+    c("F0AJ5A", "Italiaanse taalkunde II", 6),
+    c("F0BK0A", "Italiaanse taalkunde III: Italiaans vandaag", 4),
+    c("F0BK1A", "Italiaanse taalkunde III: taalvariatie en -verandering", 4),
+    c("F0AJ9A", "Italiaans: taal & tekst I", 8),
+    c("F0AK2A", "Italiaans: taal & tekst II", 8),
+  ]),
+  groep("let-ba-taal-latijn-vk", "Latijn — met voorkennis", [
+    c("F0BF0A", "Geschiedenis van de Latijnse literatuur", 3),
+    c("F0WJ8A", "Geschiedenis van Rome", 3),
+    c("F0BF1A", "Latijnse literatuur I", 4),
+    c("F0AM2B", "Latijn: taal & tekst I", 4),
+    c("F0WJ9A", "Latijnse taalkunde I", 6),
+  ]),
+  groep("let-ba-taal-latijn-zvk", "Latijn — zonder voorkennis", [
+    c("F0WJ6A", "Geschiedenis van de Latijnse literatuur met lectuuropdracht", 4),
+    c("F9XA2A", "Klassiek Latijn: initiatie met oefening", 6),
+    c("F0AK4B", "Klassiek Latijn: taalverwerving", 7),
+    c("F0WJ8A", "Geschiedenis van Rome", 3),
+  ]),
+  groep("let-ba-taal-latijn-verder", "Latijn — verdere vakken", [
+    c("F0AL3A", "Latijnse literatuur II: klassieke teksten 2a", 4),
+    c("F0CJ8A", "Latijnse literatuur II: klassieke teksten 2b", 4),
+    c("F0CJ9A", "Latijnse literatuur II: klassieke teksten 1a", 4),
+    c("F0CK0A", "Latijnse literatuur II: klassieke teksten 1b", 4),
+    c("F0CD9A", "Latijnse literatuur II: postklassieke teksten 2a", 3),
+    c("F0AL4A", "Latijnse literatuur II: postklassieke teksten 2b", 4),
+    c("F0CK1A", "Latijnse literatuur II: postklassieke teksten 1a", 3),
+    c("F0CK2A", "Latijnse literatuur II: postklassieke teksten 1b", 4),
+    c("F0AL6C", "Latijnse taalkunde II", 5),
+    c("F0AL7A", "Latin Linguistics III: Synchronic Approach", 4),
+    c("F0AL8A", "Latijnse taalkunde III: diachrone benadering", 4),
+    c("F0AM5C", "Latijn: taal & tekst II", 5),
+    c("F0AA9B", "Latijnse tekstkritiek", 3),
+  ]),
+  groep("let-ba-taal-nederlands", "Nederlands (56 sp)", [
+    c("F0WA9A", "Nederlandse letterkunde I: vroegmoderne periode", 4),
+    c("F0XU5A", "Nederlandse letterkunde II: naoorlogse literatuur", 4),
+    c("F0WB2A", "Nederlandse letterkunde II: middeleeuwen", 4),
+    c("F0XU4A", "Nederlandse letterkunde I: moderne literatuur", 4),
+    c("F0AN1A", "Atelier: Middelnederlandse literatuur", 4),
+    c("F0AN3A", "Atelier: de moderne roman", 4),
+    c("F0AN2A", "Atelier: levende klassiekers", 4),
+    c("F0AN4A", "Atelier: poëzie", 4),
+    c("F0AM8B", "Nederlandse taalkunde I", 8),
+    c("F0AM9B", "Nederlandse taalkunde II", 8),
+    c("F0AN5A", "Nederlandse taalkunde III: historische teksten", 4),
+    c("F0AN8A", "Nederlandse taalkunde III: formele taalkunde", 4),
+    c("F0WA2A", "Nederlandse taalbeheersing I", 4),
+    c("F0WA6A", "Nederlandse taalbeheersing II", 4),
+  ]),
+  groep("let-ba-taal-spaans", "Spaans (56 sp)", [
+    c("F0AO6A", "Kennismaking met de Spaanstalige wereld", 4),
+    c("F0AO7A", "Hedendaagse Spaanse en Latijns-Amerikaanse literatuur", 4),
+    c("F0AO8A", "Spaanse literaire klassieken", 6),
+    c("F0AO9A", "Onderzoeksseminarie Latijns-Amerikaanse literatuur en cultuur", 8),
+    c("F0AP0A", "Spaanse taalkunde I", 4),
+    c("F0AP1A", "Spaanse taalkunde II", 6),
+    c("F0AP2A", "Spaanse taalkunde III", 8),
+    c("F0AP5A", "Spaans: taal & tekst I", 8),
+    c("F0AP8A", "Spaans: taal & tekst II", 8),
+  ]),
+]);
+
+const letBaGeschiedenis = track("leuven-let-ba-geschiedenis", "Geschiedenis", [
+  groep("let-ba-gesch-basis", "Gemeenschappelijke basis", [
+    c("F0LA0A", "Inleiding tot het historisch onderzoek", 4),
+    c("F0LC1A", "Initiatie in de historische praktijk: oefeningen", 8),
+    c("F0SW6A", "Publieksgeschiedenis", 6),
+    c("F0WL2A", "Geschiedenis van Griekenland en Rome", 6),
+    c("F0LA3B", "Geschiedenis van de middeleeuwen", 6),
+    c("F0LA5B", "Geschiedenis van de nieuwe tijd", 6),
+    c("F0LA7B", "Geschiedenis van de nieuwste tijd", 6),
+    c("F0BM0A", "Current Issues in Historical Perspective", 6),
+    c("F0ZI7B", "History of European Colonization: 1750-2000", 6),
+    c("F0LA9A", "Geschiedenis van interculturele contacten", 6),
+    c("F0YR4A", "L-Informatievaardigheden", 4),
+    c("F0YR1A", "L-Dataverwerking", 4),
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    c("A00D5A", "Religie, zingeving en levensbeschouwing", 3),
+    c("F0LB6A", "Inleiding tot de economie", 4),
+    c("S0A21B", "Politicologie", 4),
+    c("F0SY7A", "Inleiding tot de psychologie", 4),
+  ]),
+  groep("let-ba-gesch-oudheid", "Afstudeerrichting Oudheid tot heden", [
+    c("F0YV2A", "Onderzoeksmethoden: getallen, data en netwerken", 5),
+    c("F0YL7B", "Onderzoeksmethoden: teksten, beelden en artefacten", 5),
+    c("F0BD8A", "Paleografie en historische teksten", 6),
+    c("F9XD9A", "Historisch onderzoek van de oudheid", 4),
+    c("F0LG7B", "Historisch onderzoek van de middeleeuwen", 4),
+    c("F0LG8B", "Historisch onderzoek van de nieuwe tijd", 4),
+    c("F0LG9B", "Historisch onderzoek van de nieuwste tijd", 4),
+    c("F0BD9A", "Bachelorpaper", 9),
+    c("F0BE0A", "Bachelorpaper met educatieve component", 10),
+  ]),
+]);
 
 const letBaArcheologie = track("leuven-let-ba-archeologie", "Archeologie", [
   groep("let-ba-arch-gem", "Gemeenschappelijk", [
@@ -1328,43 +1507,57 @@ const letBaKunst = track("leuven-let-ba-kunstwetenschappen", "Kunstwetenschappen
   ]),
 ]);
 
-const letBaChinese = track("leuven-let-ba-chinese", "Chinese Studies", [
-  groep("let-ba-chi-gem", "Gemeenschappelijk", [
-    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
-    c("A08C0A", "Religie, zingeving en levensbeschouwing", 3),
-    c("F0ZF9A", "L-Interculturaliteit", 4),
-    c("F0BX4A", "Artificiële intelligentie voor letteren", 4),
-    c("F0BR0A", "Programming for Humanities", 4),
-    c("F0BX5A", "Globale uitdagingen voor een duurzame samenleving", 4),
-    c("F0FG1A", "Statistics for Humanities", 4),
-    c("F0CP6A", "L-Storytelling", 4),
+const letBaMusicologie = track("leuven-let-ba-musicologie", "Musicologie", [
+  groep("let-ba-mus-gesch", "Muziekgeschiedenis en -analyse (74 sp)", [
+    c("F0BU8A", "Inleiding tot de westerse muziekgeschiedenis", 6),
+    c("F0BZ7A", "Muziek uit de middeleeuwen en renaissance", 6),
+    c("F0BZ8A", "Muziek uit de barok", 6),
+    c("F0BZ9A", "Muziek uit de klassieke en vroegromantische periode", 6),
+    c("F0CA0A", "Muziek uit de romantiek", 6),
+    c("F0BZ5A", "Muziek uit de 20ste eeuw: tot 1945", 6),
+    c("F0BZ6A", "Muziek uit de 20ste eeuw: vanaf 1945", 6),
+    c("F0ZH1B", "Pop Music", 6),
+    c("F0BW6A", "Jazz", 6),
+    c("F0BW8A", "Global Music Cultures", 9),
+    c("F0BX7A", "Muziekgeschiedenis en analyse: bijzondere thema's", 7),
+    c("F0BX6A", "Luisteranalyse en repertoirekennis", 4),
+  ]),
+  groep("let-ba-mus-theorie", "Muziektheorie en -praktijk (27 sp)", [
+    c("F0CF2A", "Muziektheorie en -praktijk: Tonale muziek 1", 6),
+    c("F0CF4A", "Muziektheorie en -praktijk: Tonale muziek 2", 6),
+    c("F0CF5A", "Muziektheorie en -praktijk: Tonale muziek 3", 6),
+    c("F0CF6A", "Muziektheorie en -praktijk: middeleeuwen en renaissance", 3),
+    c("F0CF7A", "Muziektheorie en -praktijk: 20e eeuw tot 1945", 3),
+    c("F0CF8A", "Muziektheorie en -praktijk: 20e eeuw vanaf 1945", 3),
+  ]),
+  groep("let-ba-mus-syst", "Systematische colleges (21 sp)", [
+    c("F0KA6C", "Inleiding tot de muziekwetenschap", 5),
+    c("F0BX8A", "Music and Society", 4),
+    c("F0BX9A", "Music and Media", 4),
+    c("F0BZ0A", "Muziek en uitvoering", 4),
+    c("F0BZ1A", "Muziek en filosofie", 4),
+  ]),
+  groep("let-ba-mus-comm", "Muziek en communicatie (10 sp)", [
+    c("F0BZ2A", "Schrijven en spreken over muziek 1", 5),
+    c("F0BZ4A", "Schrijven en spreken over muziek 2", 5),
+  ]),
+  groep("let-ba-mus-paper", "Bachelorpaper", [
+    c("F0KG4A", "Bachelorpaper", 9),
+  ]),
+  groep("let-ba-mus-nietmus", "Niet-musicologische colleges", [
     c("F0YR4A", "L-Informatievaardigheden", 4),
     c("F0YR1A", "L-Dataverwerking", 4),
-    c("F0CR2A", "Sleutels tot het klassieke en moderne China", 6),
-    c("F0TN2C", "Bachelorpaper", 7),
-    c("F0CR3A", "Onderzoek in de Chinese Studies", 4),
+    c("F0BB4B", "Geschiedenis van de beeldende kunsten tot 1500", 4),
+    c("F0BB6B", "Art History: 1500-1860", 4),
+    c("F0BB8B", "Geschiedenis van de beeldende kunsten vanaf 1860", 4),
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    c("A00D6A", "Religie, zingeving en levensbeschouwing", 3),
   ]),
-  groep("let-ba-chi-taal", "Taalmodule", [
-    c("F0TA6B", "Modern Chinees I: taalkunde", 16),
-    c("F0TA8B", "Modern Chinees I: oefeningen", 16),
-    c("F0TA1A", "Klassiek Chinees I", 4),
-    c("F0TB2B", "Modern Chinees II: taalkunde", 12),
-    c("F0TB6A", "Classical Chinese II", 4),
-    c("F0TB4C", "Modern Chinees II: oefeningen", 12),
-    c("F0YB5B", "Modern Chinees IIIa", 12),
-    c("F0YB6A", "Modern Chinees IIIb", 12),
-  ]),
-  groep("let-ba-chi-regio", "Regiomodule (alternerend)", [
-    k("F0TA0A", "Inleiding tot de Chinese cultuur", 4),
-    k("F0TA5A", "Inleiding tot hedendaags China", 4),
-    k("F0CR5A", "Introduction to Chinese Thought", 4),
-    k("F0CE3A", "Geschiedenis van China vanaf 1600", 4),
-    k("F0TA2A", "Geschiedenis van China tot 1600", 4),
-    k("F0TC0A", "Binnen- en buitenlandse politiek van China", 4),
-    k("D0M10A", "Economische ontwikkeling van China", 4),
-    k("C02C6A", "Modern Chinese Law", 4),
-    k("F0UC2A", "Chinese Philosophy", 4),
-    k("F0CQ0A", "East Asian Art and Popular Culture", 4),
+  groep("let-ba-mus-lkorf", "L-korf (kies 1 van 4 sp)", [
+    k("F0BX4A", "Artificiële intelligentie voor letteren", 4),
+    k("F0BX5A", "Globale uitdagingen voor een duurzame samenleving", 4),
+    k("F0CP6A", "L-Storytelling", 4),
   ]),
 ]);
 
@@ -1406,18 +1599,141 @@ const letBaArabistiek = track("leuven-let-ba-arabistiek", "Arabistiek en Islamku
   ]),
 ]);
 
+const letBaChinese = track("leuven-let-ba-chinese", "Chinese Studies", [
+  groep("let-ba-chi-gem", "Gemeenschappelijk", [
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("A08C0A", "Religie, zingeving en levensbeschouwing", 3),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    c("F0BX4A", "Artificiële intelligentie voor letteren", 4),
+    c("F0BR0A", "Programming for Humanities", 4),
+    c("F0BX5A", "Globale uitdagingen voor een duurzame samenleving", 4),
+    c("F0FG1A", "Statistics for Humanities", 4),
+    c("F0CP6A", "L-Storytelling", 4),
+    c("F0YR4A", "L-Informatievaardigheden", 4),
+    c("F0YR1A", "L-Dataverwerking", 4),
+    c("F0CR2A", "Sleutels tot het klassieke en moderne China", 6),
+    c("F0TN2C", "Bachelorpaper", 7),
+    c("F0CR3A", "Onderzoek in de Chinese Studies", 4),
+  ]),
+  groep("let-ba-chi-taal", "Taalmodule", [
+    c("F0TA6B", "Modern Chinees I: taalkunde", 16),
+    c("F0TA8B", "Modern Chinees I: oefeningen", 16),
+    c("F0TA1A", "Klassiek Chinees I", 4),
+    c("F0TB2B", "Modern Chinees II: taalkunde", 12),
+    c("F0TB6A", "Classical Chinese II", 4),
+    c("F0TB4C", "Modern Chinees II: oefeningen", 12),
+    c("F0YB5B", "Modern Chinees IIIa", 12),
+    c("F0YB6A", "Modern Chinees IIIb", 12),
+  ]),
+  groep("let-ba-chi-regio", "Regiomodule (alternerend)", [
+    k("F0TA0A", "Inleiding tot de Chinese cultuur", 4),
+    k("F0TA5A", "Inleiding tot hedendaags China", 4),
+    k("F0CR5A", "Introduction to Chinese Thought", 4),
+    k("F0CE3A", "Geschiedenis van China vanaf 1600", 4),
+    k("F0TA2A", "Geschiedenis van China tot 1600", 4),
+    k("F0TC0A", "Binnen- en buitenlandse politiek van China", 4),
+    k("D0M10A", "Economische ontwikkeling van China", 4),
+    k("C02C6A", "Modern Chinese Law", 4),
+    k("F0UC2A", "Chinese Philosophy", 4),
+    k("F0CQ0A", "East Asian Art and Popular Culture", 4),
+  ]),
+]);
+
+const letBaJapans = track("leuven-let-ba-japans", "Japanse Studies (nieuw)", [
+  groep("let-ba-jap-reflectie", "Reflectie (15 sp)", [
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("A08C0A", "Religie, zingeving en levensbeschouwing", 3),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    k("F0BX5A", "Globale uitdagingen voor een duurzame samenleving", 4),
+    k("F0CP6A", "L-Storytelling", 4),
+  ]),
+  groep("let-ba-jap-taal", "Taalmodule Japan (o.a.)", [
+    c("F0TE5C", "Modern Japans II: taalbeheersing", 17),
+    c("F0TF9A", "Inleiding tot het klassieke Japans", 4),
+    c("F0TF1B", "Modern Japans III: taalkunde", 5),
+    c("F0TF3B", "Modern Japans III: taalbeheersing", 15),
+  ]),
+  groep("let-ba-jap-optie", "Optiemodule (4 sp)", [
+    k("F0CA6A", "Short Term Mobility — semester 1", 4),
+    k("F0WB7A", "Academisch Nederlands", 4),
+    k("F0CA7A", "Short Term Mobility — semester 2", 4),
+    k("F0TA5A", "Inleiding tot hedendaags China", 4),
+  ]),
+  groep("let-ba-jap-koreaans", "Minor Koreaanse Studies (o.a.)", [
+    k("F0CQ6A", "Elementary Korean: Grammar", 6),
+    k("F0CQ7A", "Elementary Korean: Conversation", 6),
+    k("F0CQ8A", "Chinese Characters and Sino-Korean Vocabulary", 4),
+  ]),
+]);
+
 export const leuvenLetterenBachelor: Programme = {
   id: "leuven-letteren-bachelor",
   name: "Bachelor (Faculteit Letteren)",
   level: "Bachelor",
   campus: "Leuven",
+  faculty: "Letteren",
   academicYear: "2026-2027",
   description:
-    "Faculteit Letteren — KU Leuven (Leuven). Richtingen met reeds beschikbare vakken; wordt verder aangevuld.",
-  tracks: [letBaArcheologie, letBaKunst, letBaChinese, letBaArabistiek],
+    "Faculteit Letteren — KU Leuven (Leuven). Vakken per module/keuzegroep; sommige clusters worden verder aangevuld.",
+  tracks: [
+    letBaTaal,
+    letBaGeschiedenis,
+    letBaArcheologie,
+    letBaKunst,
+    letBaMusicologie,
+    letBaArabistiek,
+    letBaChinese,
+    letBaJapans,
+  ],
 };
 
 /* ---- Master & aansluitende programma's ---- */
+
+const letMaTaal = track("leuven-let-ma-taal-letterkunde", "Taal- en Letterkunde", [
+  groep("let-ma-taal-duits", "Duits", [
+    c("F0VI1A", "Deutsche Sprachwissenschaft: Theorie und Deskription", 6),
+    c("F0VI2A", "Deutsche Sprachwissenschaft: Wandel und Variation", 6),
+    c("F0UZ0A", "Deutschsprachige Gegenwartsliteratur", 6),
+    c("F0UZ1A", "Deutschsprachige Literatur der Moderne (niet ingericht 2026–2027)", 6),
+  ]),
+  groep("let-ma-taal-engels", "Engels", [
+    c("F0VI5A", "English Linguistics: Grammar and Discourse", 6),
+    c("F0YI9A", "English Linguistics: Determinants of Variation in English", 6),
+    c("F0VI3A", "English Linguistics: Causes and Consequences of Language Change", 6),
+    c("F0BD3A", "English Literature: Topics in Post-45 Literatures in English", 6),
+    c("F0UZ2A", "English Literature: Postromantic Materialisms", 6),
+    c("F0UZ3A", "English Literature: Reading Identities in the British Isles", 6),
+    c("F0BD2A", "English Literature: Topics in Irish Literature", 6),
+    c("F0UZ4A", "English Literature: Topics in Post-45 American Literature", 6),
+  ]),
+  groep("let-ma-taal-frans", "Frans", [
+    c("F0VI6A", "Linguistique française: français moderne", 6),
+    c("F0VI8A", "Linguistique française: linguistique appliquée", 6),
+    c("F0UZ6A", "Littérature française: littérature française moderne", 6),
+    c("F0UZ5A", "Littérature française: littérature classique", 6),
+    c("F0UZ7A", "Littérature française: littérature francophone moderne", 6),
+  ]),
+  groep("let-ma-taal-grieks", "Grieks", [
+    c("F0UO7A", "Papyrologie en de multiculturele samenleving in Egypte", 6),
+    c("F0UZ8A", "Grieks drama", 6),
+    c("F0VA0A", "Hellenistische literatuur", 6),
+    c("F0VA1A", "Byzantijnse literatuur", 6),
+    c("F0UZ9A", "Griekse filosofische literatuur", 6),
+    c("F0BQ5A", "Myceens Grieks", 3),
+    c("F0BQ6A", "Computerlinguïstiek voor klassieke talen", 3),
+    c("F0BQ7A", "Taalreflectie en taalbeschrijving in de oudheid", 3),
+    c("F0BQ8A", "Vergelijkende Indo-Europese taalkunde", 3),
+  ]),
+  groep("let-ma-taal-nederlands", "Nederlands", [
+    c("F0VJ1A", "Nederlandse taalkunde: verandering en variatie", 6),
+    c("F0VJ2A", "Nederlandse taalkunde: syntaxis", 6),
+    c("F0VJ3A", "Nederlandse taalkunde: morfologie", 6),
+    c("F0VB2A", "Nederlandse letterkunde: middeleeuwse letterkunde", 6),
+    c("F0VB3A", "Nederlandse letterkunde: vroegmoderne letterkunde", 6),
+    c("F0VB5A", "Nederlandse letterkunde: tekst en maatschappij in de moderne tijd", 6),
+    c("F0VB7A", "Nederlandse letterkunde: tekst en boek in de moderne tijd", 6),
+  ]),
+]);
 
 const letMaMusicologie = track("leuven-let-ma-musicologie", "Musicologie", [
   groep("let-ma-mus", "Opleidingsonderdelen", [
@@ -1430,30 +1746,71 @@ const letMaMusicologie = track("leuven-let-ma-musicologie", "Musicologie", [
 ]);
 
 const letMaArcheologie = track("leuven-let-ma-archeologie", "Archeologie", [
-  groep("let-ma-arch", "Opleidingsonderdelen", [
+  groep("let-ma-arch-kern", "Opleidingsonderdelen", [
     c("F0CD1A", "Theorie, methode en praktijk van de archeologie IV", 4),
     c("F0YF3A", "Archaeometry", 6),
     c("F0ZI2B", "Masterproef Archeologie", 20),
+    c("F0UP9A", "Veldwerkstage", 6),
+    c("F0YF9A", "Professionele stage", 6),
+  ]),
+  groep("let-ma-arch-cluster", "Keuzecluster (kies 1)", [
+    k("F0BX1B", "Landschapsarcheologie", 6),
+    k("F0CC8A", "Sociale archeologie", 6),
+    k("F0CC9A", "Archeologie van verleden economieën", 6),
+    k("F0CD0A", "Archeologische benaderingen van stadswording en stedelijkheid", 6),
   ]),
 ]);
 
 const letMaKunst = track("leuven-let-ma-kunstwetenschappen", "Kunstwetenschappen", [
-  groep("let-ma-kunst", "Opleidingsonderdelen (+ cluster verdieping, 24 sp)", [
+  groep("let-ma-kunst-kern", "Kern", [
     c("F0BP3A", "Masterproef", 18),
     c("F0XU1A", "Stage", 12),
     c("F0UM8A", "Verkorte stage", 6),
   ]),
+  groep("let-ma-kunst-cluster", "Verdiepingscluster (kies 4 OPO's, 24 sp)", [
+    k("F0XR3A", "Bouwen in de stad in de Lage Landen 1350-1700", 6),
+    k("F0BP5A", "Cultural Heritage: Interdisciplinary Debates and Challenges", 6),
+    k("F0XS5A", "Kunsttheorie", 6),
+    k("F0CG9A", "Early Modern Intersections", 6),
+    k("F0XR2A", "Beeldcultuur van de lange Middeleeuwen", 6),
+    k("F0BP6A", "Contemporary Afropean Artistic Practices", 6),
+    k("F0XS2A", "Photo Hybrids", 6),
+    k("F0XU3A", "Curatorship", 6),
+    k("F0ZB4A", "Publieksbemiddeling in musea", 6),
+  ]),
 ]);
 
 const letMaCultureleStudies = track("leuven-let-ma-culturele-studies", "Culturele Studies", [
-  groep("let-ma-cs", "Opleidingsonderdelen", [
+  groep("let-ma-cs-kern", "Verplichte kern", [
     c("F0YS4B", "Master's Thesis", 15),
-    c("F0YS5A", "Internship", 12),
-    c("F0SV6A", "Short Internship", 6),
-    c("F0CP5A", "Research Seminar", 6),
     c("F0YS7A", "Cultural Studies: Capita Selecta", 4),
     c("F0BR7A", "Cultural Policy", 7),
     c("F0BR8B", "Methods of Cultural Studies", 4),
+  ]),
+  groep("let-ma-cs-stage", "Stage/seminarie (kies min. 1)", [
+    k("F0YS5A", "Internship", 12),
+    k("F0SV6A", "Short Internship", 6),
+    k("F0CP5A", "Research Seminar", 6),
+  ]),
+]);
+
+const letMaJapans = track("leuven-let-ma-japans", "Japanse Studies", [
+  groep("let-ma-jap", "Opleidingsonderdelen", [
+    c("F0YM3A", "Masterproef", 30),
+    c("F0UV2A", "Master Seminar I", 6),
+    c("F0YM4A", "Master Seminar II", 6),
+    c("F0YL9A", "Academisch Japans A", 6),
+    c("F0YM0A", "Academisch Japans B", 6),
+    c("F0YM1A", "Zakelijk Japans A", 6),
+    c("F0YM2A", "Zakelijk Japans B", 6),
+    c("F0YM5A", "Lectuur en interpretatie A", 6),
+    c("F0YM6A", "Lectuur en interpretatie B", 6),
+    k("F0UV6A", "Cultural History of Japan", 6),
+    k("F0XM4A", "Histoire des relations internationales en Asie orientale", 6),
+    k("F0UV5A", "Law, Politics and Society in Japan", 6),
+    k("F0CP7A", "Korean Art and Popular Culture", 6),
+    k("F0YM7A", "Stage voor Japanologen", 6),
+    k("F0YM8A", "Service-learning voor Japanologen", 6),
   ]),
 ]);
 
@@ -1472,29 +1829,22 @@ const letVoorbereidingCS = track("leuven-let-voorbereiding-cs", "Voorbereidingsp
   ]),
 ]);
 
-const letMaTaalDuits = track("leuven-let-ma-taal-derde-duits", "Taal- en Letterkunde — verkort, derde taal Duits", [
-  groep("let-ma-taal-duits", "Opleidingsonderdelen", [
-    c("F0VI1A", "Deutsche Sprachwissenschaft: Theorie und Deskription", 6),
-    c("F0VI2A", "Deutsche Sprachwissenschaft: Wandel und Variation", 6),
-    c("F0UZ0A", "Deutschsprachige Gegenwartsliteratur", 6),
-    c("F0UZ1A", "Deutschsprachige Literatur der Moderne (niet ingericht 2026–2027)", 6),
-  ]),
-]);
-
 export const leuvenLetterenMaster: Programme = {
   id: "leuven-letteren-master",
   name: "Master (Faculteit Letteren)",
   level: "Master",
   campus: "Leuven",
+  faculty: "Letteren",
   academicYear: "2026-2027",
   description:
-    "Faculteit Letteren — KU Leuven (Leuven). Masters en aansluitende programma's met reeds beschikbare vakken; wordt verder aangevuld.",
+    "Faculteit Letteren — KU Leuven (Leuven). Masters en aansluitende programma's; keuzeclusters worden verder aangevuld.",
   tracks: [
-    letMaMusicologie,
+    letMaTaal,
     letMaArcheologie,
     letMaKunst,
+    letMaMusicologie,
     letMaCultureleStudies,
-    letMaTaalDuits,
+    letMaJapans,
     letSchakelCS,
     letVoorbereidingCS,
   ],
