@@ -2520,3 +2520,158 @@ button.material-section:hover .material-section-cta {
   border-color: #f4a9c0;
   color: #e11d48;
 }
+/* ============================================================================
+   BlokHub — kleurenkiezer in het gebruikersmenu
+   Plak dit onderaan je bestaande src/index.css.
+   ============================================================================ */
+
+.user-dropdown-theme {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line, #eef1f6);
+}
+.theme-swatches {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--line, #e3e8f0);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.swatch:hover {
+  transform: scale(1.1);
+}
+.swatch.active {
+  box-shadow: 0 0 0 2px #15223b;
+}
+/* ============================================================================
+   BlokHub — donkere modus + licht/donker-schakelaar
+   Plak dit HELEMAAL ONDERAAN je bestaande src/index.css (na alle andere regels).
+   ============================================================================ */
+
+/* ---- Schakelaar in het gebruikersmenu ---- */
+.theme-modes {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.mode-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--line, #e3e8f0);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  color: var(--ink, #15223b);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mode-btn:hover {
+  border-color: var(--kul, #1e64c8);
+}
+.mode-btn.active {
+  background: var(--kul, #1e64c8);
+  border-color: var(--kul, #1e64c8);
+  color: #fff;
+}
+.theme-colour-label {
+  margin-top: 14px;
+}
+
+/* ---- De donkere kleuren (overschrijven de variabelen uit :root) ---- */
+:root[data-theme="dark"] {
+  --ink: #e7edf7;
+  --muted: #9fb0c9;
+  --line: #2c3a56;
+  --surface: #161f31;
+  --bg: #0e1626;
+  --soft: #1b2740;
+  --tint: #1a2b4a;
+
+  --ok: #86efac;
+  --ok-bg: rgba(34, 197, 94, 0.16);
+  --warn: #fcd34d;
+  --warn-bg: rgba(234, 179, 8, 0.16);
+  --bad: #fca5a5;
+  --bad-bg: rgba(239, 68, 68, 0.16);
+
+  color: var(--ink);
+  background: var(--bg);
+}
+:root[data-theme="dark"] html,
+:root[data-theme="dark"] body {
+  background: var(--bg);
+}
+
+/* ---- Hardgecodeerde kleuren bijwerken in de donkere modus ---- */
+:root[data-theme="dark"] .course-chevron,
+:root[data-theme="dark"] .category-chevron {
+  color: #4b5b78;
+}
+:root[data-theme="dark"] .empty-state,
+:root[data-theme="dark"] .category-empty,
+:root[data-theme="dark"] .moderator-empty {
+  border-color: #35435f;
+}
+:root[data-theme="dark"] .form-grid input,
+:root[data-theme="dark"] .form-grid select,
+:root[data-theme="dark"] .form-grid textarea,
+:root[data-theme="dark"] .request-field input,
+:root[data-theme="dark"] .request-field textarea,
+:root[data-theme="dark"] .sidebar-search,
+:root[data-theme="dark"] .user-button,
+:root[data-theme="dark"] .user-dropdown,
+:root[data-theme="dark"] .mode-btn,
+:root[data-theme="dark"] .like-button {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--line);
+}
+:root[data-theme="dark"] .form-grid input::placeholder,
+:root[data-theme="dark"] .request-field input::placeholder,
+:root[data-theme="dark"] .request-field textarea::placeholder {
+  color: #6b7a93;
+}
+:root[data-theme="dark"] .user-dropdown-actions button:hover,
+:root[data-theme="dark"] .programme-button:hover,
+:root[data-theme="dark"] .track-sub:hover,
+:root[data-theme="dark"] .quick-tile:hover,
+:root[data-theme="dark"] .category-row:hover {
+  background: #1d2a44;
+}
+:root[data-theme="dark"] .close-button {
+  background: #22304a;
+}
+:root[data-theme="dark"] .swatch {
+  border-color: var(--surface);
+}
+:root[data-theme="dark"] .swatch.active {
+  box-shadow: 0 0 0 2px #e7edf7;
+}
+:root[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #35435f;
+}
+:root[data-theme="dark"] .empty-state,
+:root[data-theme="dark"] .category-empty,
+:root[data-theme="dark"] .moderator-empty {
+  border-style: dashed;
+}
+
+/* Gelikete knop blijft herkenbaar (rood) in de donkere modus */
+:root[data-theme="dark"] .like-button.liked {
+  background: rgba(225, 29, 72, 0.22);
+  border-color: #e11d48;
+  color: #fda4c0;
+}
+:root[data-theme="dark"] .like-button:hover {
+  border-color: #e11d48;
+  color: #fda4c0;
+}

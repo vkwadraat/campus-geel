@@ -89,6 +89,17 @@ const PROGRAMME_COLORS: Record<string, string> = {
 
 const PROGRAMME_FALLBACK = "#1e64c8";
 
+/* Kleurthema's die een student zelf kan kiezen (accentkleur van de app). */
+const ACCENT_THEMES: { name: string; color: string }[] = [
+  { name: "KU Leuven-blauw", color: "#1e64c8" },
+  { name: "Groen", color: "#1f9d55" },
+  { name: "Paars", color: "#6a2bd9" },
+  { name: "Magenta", color: "#d6356f" },
+  { name: "Terracotta", color: "#c2410c" },
+  { name: "Petrol", color: "#0f766e" },
+];
+const DEFAULT_ACCENT = "#1e64c8";
+
 function programmeColor(id: string) {
   return PROGRAMME_COLORS[id] ?? PROGRAMME_FALLBACK;
 }
@@ -179,6 +190,40 @@ function App({
   const [progSearch, setProgSearch] = useState("");
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
   const [likedByMe, setLikedByMe] = useState<Set<string>>(new Set());
+  const [accent, setAccent] = useState<string>(() => {
+    try {
+      return localStorage.getItem("blokhub-accent") || DEFAULT_ACCENT;
+    } catch {
+      return DEFAULT_ACCENT;
+    }
+  });
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem("blokhub-dark") === "1";
+    } catch {
+      return false;
+    }
+  });
+
+  // Pas de gekozen accentkleur toe + onthoud ze op dit toestel.
+  useEffect(() => {
+    document.documentElement.style.setProperty("--kul", accent);
+    try {
+      localStorage.setItem("blokhub-accent", accent);
+    } catch {
+      // localStorage niet beschikbaar; kleur blijft voor deze sessie actief.
+    }
+  }, [accent]);
+
+  // Licht/donker-thema.
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
+    try {
+      localStorage.setItem("blokhub-dark", darkMode ? "1" : "0");
+    } catch {
+      // localStorage niet beschikbaar; thema blijft voor deze sessie actief.
+    }
+  }, [darkMode]);
 
   const accountType = userEmail.toLowerCase().endsWith("@student.kuleuven.be")
     ? "Student"
@@ -505,6 +550,41 @@ function App({
                     <a href="/privacy.html" target="_blank" rel="noreferrer">
                       Bekijk ons privacybeleid →
                     </a>
+                  </div>
+
+                  <div className="user-dropdown-theme">
+                    <span className="user-info-title">Weergave</span>
+                    <div className="theme-modes">
+                      <button
+                        type="button"
+                        className={!darkMode ? "mode-btn active" : "mode-btn"}
+                        onClick={() => setDarkMode(false)}
+                      >
+                        ☀️ Licht
+                      </button>
+                      <button
+                        type="button"
+                        className={darkMode ? "mode-btn active" : "mode-btn"}
+                        onClick={() => setDarkMode(true)}
+                      >
+                        🌙 Donker
+                      </button>
+                    </div>
+
+                    <span className="user-info-title theme-colour-label">Kleur</span>
+                    <div className="theme-swatches">
+                      {ACCENT_THEMES.map((t) => (
+                        <button
+                          key={t.color}
+                          type="button"
+                          className={accent === t.color ? "swatch active" : "swatch"}
+                          style={{ background: t.color }}
+                          onClick={() => setAccent(t.color)}
+                          title={t.name}
+                          aria-label={t.name}
+                        />
+                      ))}
+                    </div>
                   </div>
 
                   <div className="user-dropdown-actions">
