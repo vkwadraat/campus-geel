@@ -25,6 +25,7 @@ import {
   type NewMaterialInput,
 } from "./lib/materials";
 import { submitCampusRequest } from "./lib/campusRequests";
+import { submitMissingReport } from "./lib/missingReports.ts";
 
 import "./index.css";
 
@@ -709,6 +710,23 @@ function App({
             </div>
           </div>
 
+          <div className="sidebar-section">
+            <details className="sidebar-missing">
+              <summary>
+                <span className="sidebar-missing-icon" aria-hidden="true">💡</span>
+                Ontbreekt er nog iets?
+                <span className="sidebar-missing-caret" aria-hidden="true">▾</span>
+              </summary>
+              <p className="sidebar-missing-intro">
+                Mis je een vak, richting of campus? Laat het ons weten.
+              </p>
+              <MissingReportForm
+                defaultEmail={userEmail}
+                context={`${campus}${selectedProgramme ? ` · ${selectedProgramme.name}` : ""}`}
+              />
+            </details>
+          </div>
+
           <div className="sidebar-bottom">
             <div className="sidebar-stat">
               <span>Goedgekeurd materiaal</span>
@@ -973,6 +991,105 @@ function CampusRequestForm({ defaultEmail }: { defaultEmail: string }) {
 
       <button type="submit" className="request-submit" disabled={status === "sending"}>
         {status === "sending" ? "Versturen…" : "Aanvraag versturen"}
+      </button>
+    </form>
+  );
+}
+
+/* ============================================================================
+   "Ontbreekt er nog iets?" — melding vanuit de zijbalk.
+   Staat op top-niveau (niet genest) zodat de velden hun focus houden.
+============================================================================ */
+function MissingReportForm({
+  defaultEmail,
+  context,
+}: {
+  defaultEmail: string;
+  context: string;
+}) {
+  const [kind, setKind] = useState("vak");
+  const [description, setDescription] = useState("");
+  const [email, setEmail] = useState(defaultEmail);
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (status === "sending") return;
+    if (!description.trim()) {
+      setStatus("error");
+      setErrorMsg("Vertel kort wat er ontbreekt.");
+      return;
+    }
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      await submitMissingReport({
+        kind,
+        description: description.trim(),
+        context: context || undefined,
+        email: email.trim() || undefined,
+      });
+      setStatus("done");
+      setDescription("");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(
+        err instanceof Error ? err.message : "Er ging iets mis. Probeer het later opnieuw."
+      );
+    }
+  }
+
+  if (status === "done") {
+    return (
+      <div className="missing-done">
+        <span role="img" aria-label="verzonden">✅</span>
+        <strong>Bedankt voor je melding!</strong>
+        <p>We nemen ze door en vullen het zo snel mogelijk aan.</p>
+        <button type="button" className="missing-reset" onClick={() => setStatus("idle")}>
+          Nog iets melden
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="missing-form" onSubmit={handleSubmit}>
+      <label className="missing-field">
+        <span>Wat ontbreekt er?</span>
+        <select value={kind} onChange={(e) => setKind(e.target.value)}>
+          <option value="vak">Een vak</option>
+          <option value="opleiding">Een opleiding of richting</option>
+          <option value="campus">Een campus</option>
+          <option value="anders">Iets anders</option>
+        </select>
+      </label>
+
+      <label className="missing-field">
+        <span>Omschrijving</span>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={3}
+          placeholder="bv. Het vak 'Statistiek II' ontbreekt in fase 2."
+          required
+        />
+      </label>
+
+      <label className="missing-field">
+        <span>E-mail (optioneel)</span>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="voor eventuele vragen"
+        />
+      </label>
+
+      {status === "error" && <p className="missing-error">{errorMsg}</p>}
+
+      <button type="submit" className="missing-submit" disabled={status === "sending"}>
+        {status === "sending" ? "Versturen…" : "Melding versturen"}
       </button>
     </form>
   );

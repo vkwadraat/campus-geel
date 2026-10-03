@@ -2675,3 +2675,165 @@ button.material-section:hover .material-section-cta {
   border-color: #e11d48;
   color: #fda4c0;
 }
+/* ============================================================================
+   BlokHub — "Ontbreekt er nog iets?" (melding in de zijbalk)
+   Plak dit onderaan je bestaande src/index.css.
+   Werkt automatisch mee in de donkere modus (gebruikt de thema-variabelen).
+   ============================================================================ */
+
+.sidebar-missing {
+  border: 1px solid var(--line, #e3e8f0);
+  border-radius: 12px;
+  background: var(--surface, #fff);
+  overflow: hidden;
+}
+
+.sidebar-missing > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink, #15223b);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+/* Verberg het standaard driehoekje van <details>. */
+.sidebar-missing > summary::-webkit-details-marker {
+  display: none;
+}
+.sidebar-missing > summary:hover {
+  color: var(--kul, #1e64c8);
+}
+.sidebar-missing-icon {
+  font-size: 15px;
+}
+.sidebar-missing-caret {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted, #6b7a93);
+  transition: transform 0.15s ease;
+}
+.sidebar-missing[open] .sidebar-missing-caret {
+  transform: rotate(180deg);
+}
+
+.sidebar-missing-intro {
+  margin: 0;
+  padding: 0 14px 10px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--muted, #6b7a93);
+}
+
+/* ---- Het formulier ---- */
+.missing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+.missing-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.missing-field > span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink, #15223b);
+}
+.missing-field select,
+.missing-field input,
+.missing-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--line, #d8dee8);
+  border-radius: 9px;
+  background: var(--surface, #fff);
+  color: var(--ink, #15223b);
+  font: inherit;
+  font-size: 13px;
+}
+.missing-field textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+.missing-field select:focus,
+.missing-field input:focus,
+.missing-field textarea:focus {
+  outline: none;
+  border-color: var(--kul, #1e64c8);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kul, #1e64c8) 18%, transparent);
+}
+.missing-field input::placeholder,
+.missing-field textarea::placeholder {
+  color: var(--muted, #9aa6ba);
+}
+
+.missing-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--bad, #d64545);
+}
+
+.missing-submit {
+  padding: 9px 12px;
+  border: none;
+  border-radius: 9px;
+  background: var(--kul, #1e64c8);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.12s ease;
+}
+.missing-submit:hover:not(:disabled) {
+  filter: brightness(1.07);
+}
+.missing-submit:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+/* ---- Bevestiging na verzenden ---- */
+.missing-done {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 0 14px 14px;
+}
+.missing-done span[role="img"] {
+  font-size: 20px;
+}
+.missing-done strong {
+  font-size: 13.5px;
+  color: var(--ink, #15223b);
+}
+.missing-done p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--muted, #6b7a93);
+}
+.missing-reset {
+  margin-top: 6px;
+  padding: 7px 11px;
+  border: 1px solid var(--line, #d8dee8);
+  border-radius: 9px;
+  background: var(--surface, #fff);
+  color: var(--ink, #15223b);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.missing-reset:hover {
+  border-color: var(--kul, #1e64c8);
+  color: var(--kul, #1e64c8);
+}
