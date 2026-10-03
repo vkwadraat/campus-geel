@@ -170,6 +170,20 @@ function App({
   const [uploadCourseId, setUploadCourseId] = useState<string | undefined>();
   const [moderatorOpen, setModeratorOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const accountType = userEmail.toLowerCase().endsWith("@student.kuleuven.be")
+    ? "Student"
+    : "Medewerker";
+
+  // Toont de initialen op basis van het e-mailadres (voornaam.naam -> "VN").
+  const userInitials = (() => {
+    const local = (userEmail.split("@")[0] || "").toLowerCase();
+    const parts = local.split(/[.\-_]/).filter(Boolean);
+    const letters = parts.map((p) => p[0]).filter((c) => /[a-z]/.test(c));
+    if (letters.length >= 2) return (letters[0] + letters[1]).toUpperCase();
+    return (local[0] || "?").toUpperCase();
+  })();
 
   async function reload() {
     try {
@@ -374,13 +388,68 @@ function App({
             + Materiaal uploaden
           </button>
 
-          <span className="user-email">{userEmail}</span>
-          <button className="secondary-button" onClick={onSignOut}>
-            Uitloggen
-          </button>
-          <button className="account-delete" onClick={handleDeleteAccount}>
-            Account verwijderen
-          </button>
+          <div className="user-menu">
+            <button
+              className="user-button"
+              onClick={() => setUserMenuOpen((o) => !o)}
+              aria-haspopup="true"
+              aria-expanded={userMenuOpen}
+            >
+              <span className="user-avatar">{userInitials}</span>
+              <span className="user-button-email">{userEmail}</span>
+              <span className="user-caret" aria-hidden="true">▾</span>
+            </button>
+
+            {userMenuOpen && (
+              <>
+                <div className="user-menu-overlay" onClick={() => setUserMenuOpen(false)} />
+                <div className="user-dropdown" role="menu">
+                  <div className="user-dropdown-head">
+                    <span className="user-avatar big">{userInitials}</span>
+                    <div className="user-dropdown-id">
+                      <strong>{userEmail}</strong>
+                      <span className="user-role">
+                        {accountType}
+                        {isModerator ? " · Moderator" : ""}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="user-dropdown-info">
+                    <span className="user-info-title">Wat we van je weten</span>
+                    <ul>
+                      <li>Je e-mailadres: {userEmail}</li>
+                      <li>Type account: {isModerator ? "Moderator" : accountType}</li>
+                      <li>Het materiaal dat je uploadt en de status ervan</li>
+                    </ul>
+                    <a href="/privacy.html" target="_blank" rel="noreferrer">
+                      Bekijk ons privacybeleid →
+                    </a>
+                  </div>
+
+                  <div className="user-dropdown-actions">
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        onSignOut();
+                      }}
+                    >
+                      Uitloggen
+                    </button>
+                    <button
+                      className="danger"
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        handleDeleteAccount();
+                      }}
+                    >
+                      Account verwijderen
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
