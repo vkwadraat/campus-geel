@@ -511,7 +511,7 @@ function App({
           )}
 
           <button className="primary-button" onClick={() => openUpload()}>
-            + Materiaal uploaden
+            + <span className="upload-label-long">Materiaal </span>uploaden
           </button>
 
           <div className="user-menu">
