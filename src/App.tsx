@@ -1004,6 +1004,7 @@ function Home({
               return (
                 <div className="campus-programme-item" key={programme.id}>
                   <button
+                    type="button"
                     className="campus-programme"
                     style={{ borderLeftColor: accent }}
                     onClick={() =>
@@ -1027,6 +1028,7 @@ function Home({
                     <div className="campus-tracks">
                       {programme.tracks.map((track) => (
                         <button
+                          type="button"
                           key={track.id}
                           className="campus-track"
                           style={{ borderLeftColor: accent }}
