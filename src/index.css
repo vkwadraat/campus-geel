@@ -2140,3 +2140,165 @@ button.material-section:hover .material-section-cta {
   opacity: 1;
   text-decoration: underline;
 }
+/* ============================================================================
+   BlokHub — gebruikersmenu in de topbalk (vervangt los Uitloggen/Verwijderen)
+   Plak dit onderaan je bestaande src/index.css.
+   (De oude .account-delete-regel mag blijven staan, die wordt niet meer gebruikt.)
+   ============================================================================ */
+
+.user-menu {
+  position: relative;
+}
+
+.user-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  border: 1px solid var(--line, #e3e8f0);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  color: var(--ink, #15223b);
+  font: inherit;
+  max-width: 260px;
+}
+.user-button:hover {
+  border-color: var(--kul, #1e64c8);
+}
+.user-button-email {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+.user-caret {
+  color: #8a93a3;
+  font-size: 11px;
+}
+
+.user-avatar {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #1e64c8, #15223b);
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+}
+.user-avatar.big {
+  width: 40px;
+  height: 40px;
+  font-size: 17px;
+}
+
+/* Onzichtbare laag die het menu sluit bij klik ernaast */
+.user-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 41;
+  width: 300px;
+  max-width: 86vw;
+  background: #fff;
+  border: 1px solid var(--line, #e3e8f0);
+  border-radius: 16px;
+  box-shadow: 0 18px 44px rgba(21, 34, 59, 0.18);
+  overflow: hidden;
+}
+
+.user-dropdown-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--line, #eef1f6);
+}
+.user-dropdown-id {
+  min-width: 0;
+}
+.user-dropdown-id strong {
+  display: block;
+  font-size: 14px;
+  color: var(--ink, #15223b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user-role {
+  font-size: 12px;
+  color: var(--kul, #1e64c8);
+  font-weight: 700;
+}
+
+.user-dropdown-info {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line, #eef1f6);
+}
+.user-info-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a93a3;
+  margin-bottom: 8px;
+}
+.user-dropdown-info ul {
+  margin: 0 0 10px;
+  padding-left: 18px;
+}
+.user-dropdown-info li {
+  font-size: 13px;
+  color: var(--muted, #5b6676);
+  line-height: 1.5;
+  word-break: break-word;
+}
+.user-dropdown-info a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--kul, #1e64c8);
+  text-decoration: none;
+}
+.user-dropdown-info a:hover {
+  text-decoration: underline;
+}
+
+.user-dropdown-actions {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 2px;
+}
+.user-dropdown-actions button {
+  text-align: left;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink, #15223b);
+  cursor: pointer;
+}
+.user-dropdown-actions button:hover {
+  background: #f1f4f9;
+}
+.user-dropdown-actions button.danger {
+  color: #b42318;
+}
+.user-dropdown-actions button.danger:hover {
+  background: #fdecea;
+}
