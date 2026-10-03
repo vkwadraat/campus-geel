@@ -1230,6 +1230,277 @@ export const leuvenMasterBiomedischeWetenschappen: Programme = {
    ALLE PROGRAMMA'S
    =========================================================================== */
 
+/* ===========================================================================
+   LEUVEN — FACULTEIT LETTEREN (academiejaar 2026-2027)
+   Vakken rechtstreeks uit de officiële KU Leuven-curricula. Richtingen zonder
+   betrouwbare vakkenlijst zijn nog niet opgenomen en worden later aangevuld.
+   =========================================================================== */
+
+/** Groep vakken zonder vaste fase/semester-indeling (als één lijst getoond). */
+const groep = (id: string, name: string, courses: Course[]): Phase =>
+  phase(id, name, [semester(`${id}-b`, "Beide semesters", courses)]);
+
+/* ---- Bachelor ---- */
+
+const letBaArcheologie = track("leuven-let-ba-archeologie", "Archeologie", [
+  groep("let-ba-arch-gem", "Gemeenschappelijk", [
+    c("F0BY0A", "Inleiding tot de prehistorische archeologie", 4),
+    c("F0YT6A", "Introduction to Egyptian Archaeology", 4),
+    c("F0YT8B", "Inleiding in de archeologie van de Griekse wereld", 4),
+    c("F0YT4B", "Inleiding in de archeologie van de Romeinse wereld", 4),
+    c("F0BY1A", "Inleiding tot de historische archeologie van Noordwest-Europa", 4),
+    c("F0WL2A", "Geschiedenis van Griekenland en Rome", 6),
+    c("F0LA3B", "Geschiedenis van de middeleeuwen", 6),
+    c("F0LA0A", "Inleiding tot het historisch onderzoek", 4),
+    c("F0IC3A", "Natuurwetenschappen en archeologie", 4),
+    c("F0FG1A", "Statistics for Humanities", 4),
+    c("F0WT1B", "Basisbegrippen van de geomorfologie en de pedologie", 6),
+    c("F9XC7A", "Topografie en cartografie", 4),
+    c("F0JD0B", "Museologie", 4),
+    c("G0L65A", "Inleiding in de ecologie en evolutie", 3),
+    c("G0P10A", "Geographic Information Systems", 4),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("A00D6A", "Religie, zingeving en levensbeschouwing", 3),
+    c("F0BR0A", "Programming for Humanities", 4),
+    c("F0BX5A", "Globale uitdagingen voor een duurzame samenleving", 4),
+    c("F0CP6A", "L-Storytelling", 4),
+    c("F0BX4A", "Artificiële intelligentie voor letteren", 4),
+    c("F0BX2A", "Theorie, methode en praktijk van de archeologie I", 10),
+    c("F0WP1A", "Theorie, methode en praktijk van de archeologie II", 10),
+    c("F0BX3A", "Theorie, methode en praktijk van de archeologie III", 10),
+    c("F0WM7A", "Fieldschool", 4),
+    c("F9XI1C", "Practicum Archeologie: Opgravingsstage", 8),
+    c("F0YR4A", "L-Informatievaardigheden", 4),
+    c("F0BY2A", "Academische onderzoeksvaardigheden I: Heuristiek", 3),
+    c("F0WT3A", "Academische onderzoeksvaardigheden II: Schrijfoefeningen", 3),
+    c("F0YR1A", "L-Dataverwerking", 4),
+  ]),
+  groep("let-ba-arch-afst", "Afstudeerrichting Archeologie", [
+    k("F0BN3A", "Archaeology of Egypt", 6),
+    k("F0BY3A", "Archeologie van de prehistorie", 6),
+    k("F0BY5A", "Historische archeologie van Noordwest-Europa", 6),
+    k("F0BY7A", "Archeologie van het Romeinse Imperium", 6),
+    k("F0YU1A", "Archeologie van de Mediterrane protohistorie", 6),
+    k("F0XH1A", "Inleiding tot de numismatiek", 4),
+    k("F0BY9A", "History of Ancient Egypt", 4),
+    k("F0CK9A", "Prehistory and Protohistory of Egypt and the Near East", 4),
+    k("F0CA6A", "Short Term Mobility (Faculty of Arts) – semester 1", 4),
+    k("F0CA7A", "Short Term Mobility (Faculty of Arts) – semester 2", 4),
+    k("F0YU7A", "Bachelorpaper archeologie", 8),
+    k("F0CP8A", "Inleiding in de Oudegyptische Hiërogliefen: Taal en Schrift 1", 4),
+    k("F0CP9A", "Inleiding in de Oudegyptische Hiërogliefen: Taal en Schrift 2", 4),
+    k("F0YH0A", "Analyse van teksten uit het Oude en Middenrijk", 4),
+    k("F0YH2A", "Analyse van teksten uit het Nieuwe Rijk", 4),
+    k("F0YH7B", "Lectuur Middelegyptische teksten (niet ingericht 2026–2027)", 4),
+  ]),
+]);
+
+const letBaKunst = track("leuven-let-ba-kunstwetenschappen", "Kunstwetenschappen", [
+  groep("let-ba-kunst-core", "Opleidingsonderdelen", [
+    c("F0BB3A", "Beeld en iconografie: analyse en betekenis van het visuele medium", 6),
+    c("F0BB4A", "Geschiedenis van de beeldende kunsten tot 1500", 6),
+    c("F0BB6A", "Art History: 1500-1860", 6),
+    c("F0BB8A", "Geschiedenis van de beeldende kunsten vanaf 1860", 6),
+    c("H01S6B", "Westerse architectuurgeschiedenis: Middeleeuwen tot Nieuwste Tijd", 6),
+    c("H01V0A", "Westerse architectuurgeschiedenis: 19e-21e eeuw", 6),
+    c("F0JC8A", "Iconologie", 6),
+    c("F0JD0A", "Museologie", 6),
+    c("F0BC4A", "Fashion and Design", 6),
+    c("F0JD6A", "Kunstkritiek", 6),
+    c("F0WL7A", "Kunstgeschiedschrijving: evolutie en discours", 4),
+    c("F0BC2A", "Kunstmarkt: evolutie en mechanismen", 6),
+    c("F0BC0A", "Kunst en publiek", 6),
+    c("F0CL1A", "Art and Ecology", 6),
+    c("F0BC3A", "Materials, Media and Techniques", 6),
+    c("F0SD1A", "Geschiedenis van de Byzantijnse kunst", 4),
+    c("F0JD9B", "Esthetische theorievorming", 4),
+    c("F0CO2A", "Bronnen van Europese literatuur en cultuur", 4),
+    c("F0LA3A", "Geschiedenis van de middeleeuwen", 4),
+    c("F0LA5A", "Geschiedenis van de nieuwe tijd", 4),
+    c("F0LA7A", "Geschiedenis van de nieuwste tijd", 4),
+    c("F0AA1A", "Inleiding tot de studie van de Europese literatuur en cultuur: na 1800", 4),
+    c("F0JA2A", "Algemene muziekgeschiedenis", 4),
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("F0LA9A", "Geschiedenis van interculturele contacten", 6),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    c("A00D6A", "Religie, zingeving en levensbeschouwing", 3),
+  ]),
+]);
+
+const letBaChinese = track("leuven-let-ba-chinese", "Chinese Studies", [
+  groep("let-ba-chi-gem", "Gemeenschappelijk", [
+    c("F0ZF8A", "L-Filosofische grondslagen van de geesteswetenschappen", 4),
+    c("A08C0A", "Religie, zingeving en levensbeschouwing", 3),
+    c("F0ZF9A", "L-Interculturaliteit", 4),
+    c("F0BX4A", "Artificiële intelligentie voor letteren", 4),
+    c("F0BR0A", "Programming for Humanities", 4),
+    c("F0BX5A", "Globale uitdagingen voor een duurzame samenleving", 4),
+    c("F0FG1A", "Statistics for Humanities", 4),
+    c("F0CP6A", "L-Storytelling", 4),
+    c("F0YR4A", "L-Informatievaardigheden", 4),
+    c("F0YR1A", "L-Dataverwerking", 4),
+    c("F0CR2A", "Sleutels tot het klassieke en moderne China", 6),
+    c("F0TN2C", "Bachelorpaper", 7),
+    c("F0CR3A", "Onderzoek in de Chinese Studies", 4),
+  ]),
+  groep("let-ba-chi-taal", "Taalmodule", [
+    c("F0TA6B", "Modern Chinees I: taalkunde", 16),
+    c("F0TA8B", "Modern Chinees I: oefeningen", 16),
+    c("F0TA1A", "Klassiek Chinees I", 4),
+    c("F0TB2B", "Modern Chinees II: taalkunde", 12),
+    c("F0TB6A", "Classical Chinese II", 4),
+    c("F0TB4C", "Modern Chinees II: oefeningen", 12),
+    c("F0YB5B", "Modern Chinees IIIa", 12),
+    c("F0YB6A", "Modern Chinees IIIb", 12),
+  ]),
+  groep("let-ba-chi-regio", "Regiomodule (alternerend)", [
+    k("F0TA0A", "Inleiding tot de Chinese cultuur", 4),
+    k("F0TA5A", "Inleiding tot hedendaags China", 4),
+    k("F0CR5A", "Introduction to Chinese Thought", 4),
+    k("F0CE3A", "Geschiedenis van China vanaf 1600", 4),
+    k("F0TA2A", "Geschiedenis van China tot 1600", 4),
+    k("F0TC0A", "Binnen- en buitenlandse politiek van China", 4),
+    k("D0M10A", "Economische ontwikkeling van China", 4),
+    k("C02C6A", "Modern Chinese Law", 4),
+    k("F0UC2A", "Chinese Philosophy", 4),
+    k("F0CQ0A", "East Asian Art and Popular Culture", 4),
+  ]),
+]);
+
+const letBaArabistiek = track("leuven-let-ba-arabistiek", "Arabistiek en Islamkunde", [
+  groep("let-ba-arab-taal", "Taalverwerving", [
+    c("F0CQ3A", "Modern Standaardarabisch I grammatica", 3),
+    c("F0CQ4A", "Modern Standaardarabisch I taalbeheersing", 17),
+    c("F0CG8A", "Gesproken Arabisch: Egyptisch I", 4),
+    c("F0AV6A", "Modern Standaardarabisch II, grammatica", 7),
+    c("F0AW0A", "Modern Standaardarabisch II, taalbeheersing", 10),
+    c("F0AV8A", "Modern Standaardarabisch II, luisteren en spreken", 7),
+    c("F0WR5A", "Arabische verhalen en gedichten", 4),
+    c("F0AW2A", "Modern Standaardarabisch III, media Arabisch", 8),
+    c("F0AW4A", "Modern Standaardarabisch III, taalbeheersing", 10),
+    c("F0CK4A", "Gesproken Arabisch: Egyptisch II", 4),
+  ]),
+  groep("let-ba-arab-letter", "Taal- en letterkunde", [
+    c("F0VK9A", "Inleiding tot de Arabische letterkunde", 4),
+    c("F0WG1A", "Sociolinguïstiek van de Arabische wereld", 4),
+    c("F0YO9A", "Arabic in Context: Texts and Current Themes", 4),
+  ]),
+  groep("let-ba-arab-regio", "Regio — geschiedenis", [
+    c("F0WG6A", "Klassieke Kennistradities in de Islam", 4),
+    c("F0CQ2A", "Political Economy and Development of the modern Middle East", 4),
+    c("F0WG8A", "De geschiedenis van het Midden-Oosten vanaf 1750", 4),
+    c("F0WE9A", "Gender and Culture in the Middle East and North Africa", 3),
+  ]),
+  groep("let-ba-arab-islam", "Islamkunde", [
+    c("F0TJ4A", "Inleiding tot de islam", 4),
+    c("F0YQ1A", "Modern Trends and Thinkers in Islam", 4),
+    c("F0AW7A", "Bronnenbegrip in de Islam", 4),
+    c("A05G1A", "Islamitisch recht en fiqh", 4),
+    c("F0AW6A", "Soefisme", 4),
+  ]),
+  groep("let-ba-arab-reflectie", "Reflectie", [
+    k("W0AG3A", "Arabische filosofie", 4),
+    k("W0AM9A", "Arabic Philosophy", 4),
+    c("A08C0A", "Religie, zingeving en levensbeschouwing", 3),
+  ]),
+]);
+
+export const leuvenLetterenBachelor: Programme = {
+  id: "leuven-letteren-bachelor",
+  name: "Bachelor (Faculteit Letteren)",
+  level: "Bachelor",
+  campus: "Leuven",
+  academicYear: "2026-2027",
+  description:
+    "Faculteit Letteren — KU Leuven (Leuven). Richtingen met reeds beschikbare vakken; wordt verder aangevuld.",
+  tracks: [letBaArcheologie, letBaKunst, letBaChinese, letBaArabistiek],
+};
+
+/* ---- Master & aansluitende programma's ---- */
+
+const letMaMusicologie = track("leuven-let-ma-musicologie", "Musicologie", [
+  groep("let-ma-mus", "Opleidingsonderdelen", [
+    c("F0UM4C", "Masterproef", 20),
+    c("F0CC0A", "Analyse in context: muziek tot 1750", 4),
+    c("F0CC1A", "Analyse in context: muziek van 1750 tot 1900", 4),
+    c("F0CC2A", "Analyse in context: muziek van de 20e en 21e eeuw", 4),
+    c("F0CG0A", "Music and Anthropology", 4),
+  ]),
+]);
+
+const letMaArcheologie = track("leuven-let-ma-archeologie", "Archeologie", [
+  groep("let-ma-arch", "Opleidingsonderdelen", [
+    c("F0CD1A", "Theorie, methode en praktijk van de archeologie IV", 4),
+    c("F0YF3A", "Archaeometry", 6),
+    c("F0ZI2B", "Masterproef Archeologie", 20),
+  ]),
+]);
+
+const letMaKunst = track("leuven-let-ma-kunstwetenschappen", "Kunstwetenschappen", [
+  groep("let-ma-kunst", "Opleidingsonderdelen (+ cluster verdieping, 24 sp)", [
+    c("F0BP3A", "Masterproef", 18),
+    c("F0XU1A", "Stage", 12),
+    c("F0UM8A", "Verkorte stage", 6),
+  ]),
+]);
+
+const letMaCultureleStudies = track("leuven-let-ma-culturele-studies", "Culturele Studies", [
+  groep("let-ma-cs", "Opleidingsonderdelen", [
+    c("F0YS4B", "Master's Thesis", 15),
+    c("F0YS5A", "Internship", 12),
+    c("F0SV6A", "Short Internship", 6),
+    c("F0CP5A", "Research Seminar", 6),
+    c("F0YS7A", "Cultural Studies: Capita Selecta", 4),
+    c("F0BR7A", "Cultural Policy", 7),
+    c("F0BR8B", "Methods of Cultural Studies", 4),
+  ]),
+]);
+
+const letSchakelCS = track("leuven-let-schakel-cs", "Schakelprogramma Culturele Studies", [
+  groep("let-schakel-cs", "Opleidingsonderdelen", [
+    c("F0AA5A", "Algemene literatuurwetenschap I", 4),
+    c("F0AS1A", "Introduction to Cultural Studies", 4),
+    c("F0BB3A", "Beeld en iconografie: analyse en betekenis van het visuele medium", 6),
+  ]),
+]);
+
+const letVoorbereidingCS = track("leuven-let-voorbereiding-cs", "Voorbereidingsprogramma Culturele Studies", [
+  groep("let-voorb-cs", "Toegewezen opleidingsonderdeel (6 sp)", [
+    k("F0CE1A", "Introduction to Cultural Studies with Reading Assignment Narrative Analysis", 6),
+    k("F0CE2A", "Introduction to Cultural Studies with Reading Assignment Visual Analysis", 6),
+  ]),
+]);
+
+const letMaTaalDuits = track("leuven-let-ma-taal-derde-duits", "Taal- en Letterkunde — verkort, derde taal Duits", [
+  groep("let-ma-taal-duits", "Opleidingsonderdelen", [
+    c("F0VI1A", "Deutsche Sprachwissenschaft: Theorie und Deskription", 6),
+    c("F0VI2A", "Deutsche Sprachwissenschaft: Wandel und Variation", 6),
+    c("F0UZ0A", "Deutschsprachige Gegenwartsliteratur", 6),
+    c("F0UZ1A", "Deutschsprachige Literatur der Moderne (niet ingericht 2026–2027)", 6),
+  ]),
+]);
+
+export const leuvenLetterenMaster: Programme = {
+  id: "leuven-letteren-master",
+  name: "Master (Faculteit Letteren)",
+  level: "Master",
+  campus: "Leuven",
+  academicYear: "2026-2027",
+  description:
+    "Faculteit Letteren — KU Leuven (Leuven). Masters en aansluitende programma's met reeds beschikbare vakken; wordt verder aangevuld.",
+  tracks: [
+    letMaMusicologie,
+    letMaArcheologie,
+    letMaKunst,
+    letMaCultureleStudies,
+    letMaTaalDuits,
+    letSchakelCS,
+    letVoorbereidingCS,
+  ],
+};
+
+
 export const programmes: Programme[] = [
   geelBiowetenschappen,
   geelIndustrieleWetenschappen,
@@ -1237,6 +1508,8 @@ export const programmes: Programme[] = [
   geelMasterIndustrieleWetenschappen,
   geelMasterBiowetenschappen,
   leuvenMasterBiomedischeWetenschappen,
+  leuvenLetterenBachelor,
+  leuvenLetterenMaster,
 ];
 
 export const getProgrammesByCampus = (campus: Campus): Programme[] =>
